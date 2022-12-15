@@ -1,11 +1,17 @@
 package output;
 
 public class OutputFactory {
-  public static Output getOutput(final String errorMessage) {
-    return switch (errorMessage) {
-      case "error" -> new Error();
-      case "success" -> new Success();
-      default -> null;
-    };
+  public static Output getOutput(final String errorMessage, final String feature) {
+    switch (errorMessage) {
+      case "ERROR": {
+        return new Error(feature);
+      }
+      case "SUCCESS": {
+        return new Success(feature);
+      }
+      default: {
+        return null;
+      }
+    }
   }
 }

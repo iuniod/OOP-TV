@@ -13,17 +13,17 @@ public class Database {
   private ArrayList<Movie> movies;
   private String currentPage;
   private User currentUser;
-  private PageWorkFlow pageWorkFlow;
+  private final PageWorkFlow pageWorkFlow;
 
   private Database() {
     users = new ArrayList<>();
     movies = new ArrayList<>();
-    currentPage = "HomepageNeautentificat";
+    currentPage = "HOMEPAGENEAUTENTIFICAT";
     currentUser = new User();
     pageWorkFlow = PageWorkFlow.getInstance();
   }
 
-  private static Database instance = new Database();
+  private static final Database instance = new Database();
 
   public static Database getInstance() {
     return instance;

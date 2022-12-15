@@ -5,16 +5,13 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import command.Command;
 import database.Database;
 import input.action.Action;
-import output.Output;
+import output.OutputFactory;
 
 import java.io.File;
 import java.io.IOException;
 
-import static output.OutputFactory.getOutput;
-
-public class ChangePage implements Command, Output {
+public class ChangePage extends OutputFactory implements Command {
   private final Action action;
-  private String error;
 
   public ChangePage(final Action action) {
     this.action = action;
@@ -22,19 +19,28 @@ public class ChangePage implements Command, Output {
   @Override
   public boolean isExecutable() {
     String currentPage = Database.getInstance().getCurrentPage();
-    return currentPage.equals(action.getPage());
+    String nextPage = action.getPage();
+    if (currentPage == null || nextPage == null) {
+      return false;
+    }
+
+    currentPage = currentPage.toUpperCase();
+    nextPage = nextPage.toUpperCase();
+
+    return Database.getInstance().getPageWorkFlow().get(currentPage).contains(nextPage);
   }
 
   @Override
   public void executeSuccess(ObjectMapper mapper, ArrayNode arrayNode, File myOutput) {
     Database.getInstance().setCurrentPage(action.getPage());
-    if (action.getPage().equals("HomepageNeautentificat")) {
-      Database.getInstance().setCurrentUser(null);
+//  change page logout moves us to HOMEPAGENEAUTENTIFICAT
+    if (Database.getInstance().getCurrentPage().equalsIgnoreCase("LOGOUT")) {
+      Database.getInstance().setCurrentPage("HOMEPAGENEAUTENTIFICAT");
     }
   }
 
   @Override
   public void executeError(ObjectMapper mapper, ArrayNode arrayNode, File output) throws IOException {
-    getOutput("error").write(mapper, "error", arrayNode, output);
+    getOutput("ERROR", action.getFeature()).write(mapper, arrayNode, output);
   }
 }

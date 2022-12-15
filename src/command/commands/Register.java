@@ -13,7 +13,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class Register extends OutputFactory implements Command {
-  private Action action;
+  private final Action action;
 
   public Register(final Action action) {
     this.action = action;
@@ -22,26 +22,31 @@ public class Register extends OutputFactory implements Command {
   @Override
   public boolean isExecutable() {
     Database database = Database.getInstance();
-    if (!database.getCurrentPage().equals("Register")) {
+    if (!database.getCurrentPage().toUpperCase().equals("REGISTER")) {
       return false;
     }
 
     Credential credentials = action.getCredentials();
+
     return credentials != null && !database.containsUser(credentials);
   }
 
   @Override
-  public void executeSuccess(ObjectMapper mapper, ArrayNode arrayNode, File output) {
+  public void executeSuccess(ObjectMapper mapper, ArrayNode arrayNode, File output) throws IOException {
     Database database = Database.getInstance();
-    User user = new User(action.getCredentials());
-    database.addUser(user);
-    database.setCurrentUser(action.getCredentials());
-    Database.getInstance().setCurrentPage("HomepageAutentificat");
+    Credential credentials = action.getCredentials();
+    database.addUser(new User(credentials));
+    database.setCurrentUser(credentials);
+    getOutput("SUCCESS", action.getFeature()).write(mapper, arrayNode, output);
+    Database.getInstance().setCurrentPage("HOMEPAGEAUTENTIFICAT");
   }
 
   @Override
   public void executeError(ObjectMapper mapper, ArrayNode arrayNode, File output) throws IOException {
-    getOutput("error").write(mapper, "error", arrayNode, output);
-    Database.getInstance().setCurrentPage("HomepageNeautentificat");
+    getOutput("ERROR", action.getFeature()).write(mapper, arrayNode, output);
+//  if there was an error in register, we go back to HOMEPAGENEAUTENTIFICAT only if we were in register page
+    if (Database.getInstance().getCurrentPage().toUpperCase().equals("REGISTER")) {
+      Database.getInstance().setCurrentPage("HOMEPAGENEAUTENTIFICAT");
+    }
   }
 }

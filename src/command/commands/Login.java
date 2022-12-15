@@ -22,7 +22,7 @@ public class Login extends OutputFactory implements Command {
   @Override
   public boolean isExecutable() {
     Database database = Database.getInstance();
-    if (!database.getCurrentPage().equals("Login")) {
+    if (!database.getCurrentPage().toUpperCase().equals("LOGIN")) {
       return false;
     }
 
@@ -38,13 +38,16 @@ public class Login extends OutputFactory implements Command {
   public void executeSuccess(ObjectMapper mapper, ArrayNode arrayNode, File output) throws IOException {
     Database database = Database.getInstance();
     database.setCurrentUser(action.getCredentials());
-    getOutput("success").write(mapper, null, arrayNode, output);
-    Database.getInstance().setCurrentPage("HomepageAutentificat");
+    getOutput("SUCCESS", action.getFeature()).write(mapper, arrayNode, output);
+    Database.getInstance().setCurrentPage("HOMEPAGEAUTENTIFICAT");
   }
 
   @Override
   public void executeError(ObjectMapper mapper, ArrayNode arrayNode, File output) throws IOException {
-    getOutput("error").write(mapper, "error", arrayNode, output);
-    Database.getInstance().setCurrentPage("HomepageNeautentificat");
+    getOutput("ERROR", action.getFeature()).write(mapper, arrayNode, output);
+//  if there was an error in login, we go back to HOMEPAGENEAUTENTIFICAT only if we were in login page
+    if (Database.getInstance().getCurrentPage().equalsIgnoreCase("LOGIN")) {
+      Database.getInstance().setCurrentPage("HOMEPAGENEAUTENTIFICAT");
+    }
   }
 }

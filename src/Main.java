@@ -17,8 +17,8 @@ public final class Main {
     public static void main(final String[] args) throws IOException {
         final File input = new File(args[0]);
          File output = new File(args[1]);
-        String test = args[0].substring(args[0].lastIndexOf('/') + 1, args[0].lastIndexOf('.'));
-         File myOutput = new File("checker/resources/out/" + test + ".json");
+        String test = args[0].substring(args[0].lastIndexOf("\\") + 1);
+         File myOutput = new File("checker/resources/out/" + test);
         ObjectMapper mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         ArrayNode arrayNode = mapper.createArrayNode();
@@ -28,7 +28,7 @@ public final class Main {
         InputFormat inputFormat = mapper.readValue(input, InputFormat.class);
         Database database = Database.getInstance();
         database.setDatabase(inputFormat);
-        Database.getInstance().setCurrentPage("HomepageNeautentificat");
+        Database.getInstance().setCurrentPage("HOMEPAGENEAUTENTIFICAT");
         Database.getInstance().setCurrentUser(null);
         Database.getInstance().setMovies(null);
 //        iterate through each command action

@@ -6,14 +6,14 @@ import java.util.Map;
 
 public class PageWorkFlow {
   private final static Map<String, ArrayList<String>> pageWorkFlow = Map.ofEntries(
-      Map.entry("HomepageNeautentificat", new ArrayList<>(List.of("Login", "Register"))),
-      Map.entry("Login", new ArrayList<>(List.of("HomepageAutentificat", "HomepageNeautentificat"))),
-      Map.entry("Register", new ArrayList<>(List.of("HomepageAutentificat", "HomepageNeautentificat"))),
-      Map.entry("HomepageAutentificat", new ArrayList<>(List.of("Logout", "Movies", "Upgrades"))),
-      Map.entry("Logout", new ArrayList<>(List.of("HomepageNeautentificat"))),
-      Map.entry("Movies", new ArrayList<>(List.of("HomepageAutentificat", "Logout", "See details"))),
-      Map.entry("Upgrades", new ArrayList<>(List.of("HomepageAutentificat", "Logout", "Movies"))),
-      Map.entry("See details", new ArrayList<>(List.of("HomepageAutentificat", "Movies", "Logout", "Upgrades")))
+      Map.entry("HOMEPAGENEAUTENTIFICAT", new ArrayList<>(List.of("LOGIN", "REGISTER"))),
+      Map.entry("LOGIN", new ArrayList<>(List.of("HOMEPAGEAUTENTIFICAT", "HOMEPAGENEAUTENTIFICAT"))),
+      Map.entry("REGISTER", new ArrayList<>(List.of("HOMEPAGEAUTENTIFICAT", "HOMEPAGENEAUTENTIFICAT"))),
+      Map.entry("HOMEPAGEAUTENTIFICAT", new ArrayList<>(List.of("LOGOUT", "MOVIES", "UPGRADES"))),
+      Map.entry("LOGOUT", new ArrayList<>(List.of("HOMEPAGENEAUTENTIFICAT"))),
+      Map.entry("MOVIES", new ArrayList<>(List.of("HOMEPAGEAUTENTIFICAT", "LOGOUT", "SEE DETAILS"))),
+      Map.entry("UPGRADES", new ArrayList<>(List.of("HOMEPAGEAUTENTIFICAT", "LOGOUT", "MOVIES"))),
+      Map.entry("SEE DETAILS", new ArrayList<>(List.of("HOMEPAGEAUTENTIFICAT", "MOVIES", "LOGOUT", "UPGRADES")))
   );
   private final static PageWorkFlow instance = new PageWorkFlow();
 

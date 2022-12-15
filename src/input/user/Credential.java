@@ -46,8 +46,9 @@ public class Credential {
     return country;
   }
 
-  public int getBalance() {
-    return balance;
+  public String getBalance() {
+    String balanceString = Integer.toString(balance);
+    return balanceString;
   }
 
   @Override

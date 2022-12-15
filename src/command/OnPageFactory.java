@@ -9,9 +9,15 @@ public class OnPageFactory extends AbstractFactory {
   @Override
   public Command getAction(final Action action) {
     switch (action.getFeature()) {
-      case "login" -> {return  new Login(action);}
-      case "register" -> {return new Register(action);}
-      default -> {return null;}
+      case "login":{
+        return  new Login(action);
+      }
+      case "register": {
+        return new Register(action);
+      }
+      default: {
+        return null;
+      }
     }
   }
 }

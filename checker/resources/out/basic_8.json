@@ -1,5 +1,19 @@
 [ {
-  "error" : "error",
-  "currentMoviesList" : null,
-  "currentUser" : null
+  "error" : null,
+  "currentMoviesList" : [ ],
+  "currentUser" : {
+    "credentials" : {
+      "name" : "Dorel",
+      "password" : "ciucas",
+      "accountType" : "standard",
+      "country" : "Romania",
+      "balance" : "3000"
+    },
+    "tokensCount" : 0,
+    "numFreePremiumMovies" : 15,
+    "purchasedMovies" : [ ],
+    "watchedMovies" : [ ],
+    "likedMovies" : [ ],
+    "ratedMovies" : [ ]
+  }
 } ]

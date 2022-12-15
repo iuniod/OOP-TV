@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class User {
   private Credential credentials;
-  private int tokenAccount = 0;
+  private int tokensCount = 0;
   private int numFreePremiumMovies = 15;
   private ArrayList<Movie> purchasedMovies = new ArrayList<>();
   private ArrayList<Movie> watchedMovies = new ArrayList<>();
@@ -24,8 +24,8 @@ public class User {
     this.credentials = credentials;
   }
 
-  public void setTokenAccount(final int tokenAccount) {
-    this.tokenAccount = tokenAccount;
+  public void setTokensCount(final int tokensAccount) {
+    this.tokensCount = tokensAccount;
   }
 
   public void setNumFreePremiumMovies(final int numFreePremiumMovies) {
@@ -52,22 +52,8 @@ public class User {
     return credentials;
   }
 
-  public String getName() {
-    if (credentials == null) {
-      return "";
-    }
-    return credentials.getName();
-  }
-
-  public String getCountry() {
-    if (credentials == null) {
-      return "";
-    }
-    return credentials.getCountry();
-  }
-
-  public int getTokenAccount() {
-    return tokenAccount;
+  public int getTokensCount() {
+    return tokensCount;
   }
 
   public int getNumFreePremiumMovies() {

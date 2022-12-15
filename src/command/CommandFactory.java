@@ -2,10 +2,16 @@ package command;
 
 public class CommandFactory {
   public static AbstractFactory getAction(final String actionType) {
-    return switch (actionType) {
-      case "on page" -> new OnPageFactory();
-      case "change page" -> new ChangePageFactory();
-      default -> null;
-    };
+    switch (actionType) {
+      case "on page":{
+        return new OnPageFactory();
+      }
+      case "change page": {
+        return new ChangePageFactory();
+      }
+      default: {
+        return null;
+      }
+    }
   }
 }
