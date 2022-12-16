@@ -17,6 +17,10 @@
     "ratedMovies" : [ ]
   }
 }, {
+  "error" : "Error",
+  "currentMoviesList" : [ ],
+  "currentUser" : null
+}, {
   "error" : null,
   "currentMoviesList" : [ ],
   "currentUser" : {

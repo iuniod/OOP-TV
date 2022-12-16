@@ -1,5 +1,6 @@
 package command;
 
+import command.commands.Filter;
 import command.commands.Login;
 import command.commands.Register;
 import command.commands.Search;
@@ -18,6 +19,9 @@ public class OnPageFactory extends AbstractFactory {
       }
       case "search": {
         return new Search(action);
+      }
+      case "filter": {
+        return new Filter(action);
       }
       default: {
         return null;

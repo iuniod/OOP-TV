@@ -1,8 +1,8 @@
 package input.action.filters;
 
 public class Filter {
-  private Sort sort;
-  private Contain contains;
+  private Sort sort = null;
+  private Contain contains = null;
 
   public Filter() {
   }

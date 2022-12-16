@@ -18,7 +18,7 @@ public class PageWorkFlow {
   private final static Map<String, ArrayList<String>> featureWorkFlow = Map.ofEntries(
       Map.entry("LOGIN", new ArrayList<>(List.of("LOGIN"))),
       Map.entry("REGISTER", new ArrayList<>(List.of("REGISTER"))),
-      Map.entry("MOVIES", new ArrayList<>(List.of("SEARCH")))
+      Map.entry("MOVIES", new ArrayList<>(List.of("SEARCH", "FILTER")))
   );
   private final static PageWorkFlow instance = new PageWorkFlow();
 

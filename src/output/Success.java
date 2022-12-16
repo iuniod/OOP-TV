@@ -26,6 +26,7 @@ public class Success implements Output {
   @Override
   public ArrayList<Movie> currentMoviesList() {
     ArrayList<Movie> moviesList = new ArrayList<>();
+
     if (page.equalsIgnoreCase("MOVIES")) {
       Credential credentials = Database.getInstance().getCurrentUser().getCredentials();
       ArrayList<Movie> movies = Database.getInstance().getMovies();
