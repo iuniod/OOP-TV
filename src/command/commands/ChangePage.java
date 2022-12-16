@@ -9,6 +9,7 @@ import output.OutputFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class ChangePage extends OutputFactory implements Command {
   private final Action action;
@@ -16,13 +17,13 @@ public class ChangePage extends OutputFactory implements Command {
   public ChangePage(final Action action) {
     this.action = action;
   }
+
   @Override
   public boolean isExecutable() {
     String currentPage = Database.getInstance().getCurrentPage();
     String nextPage = action.getPage();
-    if (currentPage == null || nextPage == null) {
+    if (currentPage == null || nextPage == null)
       return false;
-    }
 
     currentPage = currentPage.toUpperCase();
     nextPage = nextPage.toUpperCase();
@@ -31,18 +32,28 @@ public class ChangePage extends OutputFactory implements Command {
   }
 
   @Override
-  public void executeSuccess(ObjectMapper mapper, ArrayNode arrayNode, File myOutput) throws IOException {
+  public void executeSuccess(ObjectMapper mapper, ArrayNode arrayNode, File output) throws IOException {
     Database.getInstance().setCurrentPage(action.getPage());
-//  change page logout moves us to HOMEPAGENEAUTENTIFICAT
-    if (Database.getInstance().getCurrentPage().equalsIgnoreCase("LOGOUT")) {
-      Database.getInstance().setCurrentPage("HOMEPAGENEAUTENTIFICAT");
-    } else if (Database.getInstance().getCurrentPage().equalsIgnoreCase("MOVIES")) {
-      getOutput("SUCCESS", action.getPage()).write(mapper, arrayNode, myOutput);
+    switch (Database.getInstance().getCurrentPage().toUpperCase()) {
+      case "LOGOUT":
+        Database.getInstance().setCurrentPage("HOMEPAGENEAUTENTIFICAT");
+        break;
+      case "MOVIES":
+        Objects.requireNonNull(getOutput("SUCCESS", action)).write(mapper, arrayNode, output);
+        break;
+      case "SEE DETAILS":
+        if (Database.getInstance().getMoviesTitles().contains(action.getMovie())) {
+          Objects.requireNonNull(getOutput("SUCCESS", action)).write(mapper, arrayNode, output);
+        } else {
+          Objects.requireNonNull(getOutput("ERROR", action)).write(mapper, arrayNode, output);
+        }
+      default:
+        break;
     }
   }
 
   @Override
   public void executeError(ObjectMapper mapper, ArrayNode arrayNode, File output) throws IOException {
-    getOutput("ERROR", action.getFeature()).write(mapper, arrayNode, output);
+    Objects.requireNonNull(getOutput("ERROR", action)).write(mapper, arrayNode, output);
   }
 }

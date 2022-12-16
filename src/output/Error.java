@@ -6,12 +6,6 @@ import input.user.User;
 import java.util.ArrayList;
 
 public class Error implements Output {
-  private final String page;
-
-  public Error(final String page) {
-    this.page = page;
-  }
-
   @Override
   public String error() {
     return "Error";

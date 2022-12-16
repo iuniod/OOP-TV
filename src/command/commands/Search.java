@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class Search implements Command, Output {
   private final Action action;
-  private ArrayList<Movie> movies = new ArrayList<>();
+  private final ArrayList<Movie> movies = new ArrayList<>();
   private String error = null;
 
   public Search(final Action action) {
@@ -37,13 +37,13 @@ public class Search implements Command, Output {
     }
 
     Credential credentials = Database.getInstance().getCurrentUser().getCredentials();
-    for (Movie movie : database.getMovies()) {
+    for (Movie movie : database.getMovies())
       if (movie.getCountriesBanned().isEmpty()) {
         movies.add(movie);
-      } else if (!movie.getCountriesBanned().contains(credentials.getCountry())  && movie.getName().startsWith(action.getStartsWith())) {
+      } else if (!movie.getCountriesBanned().contains(credentials.getCountry()) &&
+                     movie.getName().startsWith(action.getStartsWith())) {
         movies.add(movie);
       }
-    }
 
     return true;
   }
@@ -63,9 +63,6 @@ public class Search implements Command, Output {
     if (isExecutable())
       return null;
 
-    if (error != null)
-      return error;
-
     return error;
   }
 
@@ -75,7 +72,7 @@ public class Search implements Command, Output {
       return null;
 
     return Database.getInstance().getCurrentUser();
-}
+  }
 
   @Override
   public ArrayList<Movie> currentMoviesList() {

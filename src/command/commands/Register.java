@@ -41,13 +41,13 @@ public class Register extends OutputFactory implements Command {
     Credential credentials = action.getCredentials();
     database.addUser(new User(credentials));
     database.setCurrentUser(credentials);
-    getOutput("SUCCESS", action.getFeature()).write(mapper, arrayNode, output);
+    getOutput("SUCCESS", action).write(mapper, arrayNode, output);
     Database.getInstance().setCurrentPage("HOMEPAGEAUTENTIFICAT");
   }
 
   @Override
   public void executeError(ObjectMapper mapper, ArrayNode arrayNode, File output) throws IOException {
-    getOutput("ERROR", action.getFeature()).write(mapper, arrayNode, output);
+    getOutput("ERROR", action).write(mapper, arrayNode, output);
 //  if there was an error in register, we go back to HOMEPAGENEAUTENTIFICAT only if we were in register page
     if (Database.getInstance().getCurrentPage().toUpperCase().equals("REGISTER")) {
       Database.getInstance().setCurrentPage("HOMEPAGENEAUTENTIFICAT");

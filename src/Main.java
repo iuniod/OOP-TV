@@ -24,20 +24,15 @@ public final class Main {
         ArrayNode arrayNode = mapper.createArrayNode();
 
 //      read the input file
-        System.out.println("Reading input file..." + test);
         InputFormat inputFormat = mapper.readValue(input, InputFormat.class);
         Database database = Database.getInstance();
         database.setDatabase(inputFormat);
-        Database.getInstance().setCurrentPage("HOMEPAGENEAUTENTIFICAT");
-        Database.getInstance().setCurrentUser(null);
 //        iterate through each command action
         for (Action action : inputFormat.getActions()) {
             AbstractFactory factory = CommandFactory.getAction(action.getType());
             if (factory == null) {
-                //NU AVEM NICI ON PAGE NIGI CHANGE PAGE CA COMENZI
                 continue;
             } else {
-                //AVEM ON PAGE SAU CHANGE PAGE CA COMENZI
                 Command command = factory.getAction(action);
                 if (command == null) {
                     continue;

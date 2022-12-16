@@ -10,6 +10,7 @@ import output.OutputFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class Login extends OutputFactory implements Command {
   private final Action action;
@@ -21,18 +22,15 @@ public class Login extends OutputFactory implements Command {
   @Override
   public boolean isExecutable() {
     Database database = Database.getInstance();
-    if (!database.getCurrentPage().equalsIgnoreCase("LOGIN")) {
+    if (!database.getCurrentPage().equalsIgnoreCase("LOGIN"))
       return false;
-    }
 
-    if (!database.getFeatureWorkFlow().get("LOGIN").contains(action.getFeature().toUpperCase())) {
+    if (!database.getFeatureWorkFlow().get("LOGIN").contains(action.getFeature().toUpperCase()))
       return false;
-    }
 
     Credential credentials = action.getCredentials();
-    if (credentials == null || !database.containsUser(credentials)) {
+    if (credentials == null || !database.containsUser(credentials))
       return false;
-    }
 
     return database.verifyPassword(credentials);
   }
@@ -41,16 +39,15 @@ public class Login extends OutputFactory implements Command {
   public void executeSuccess(ObjectMapper mapper, ArrayNode arrayNode, File output) throws IOException {
     Database database = Database.getInstance();
     database.setCurrentUser(action.getCredentials());
-    getOutput("SUCCESS", action.getFeature()).write(mapper, arrayNode, output);
+    Objects.requireNonNull(getOutput("SUCCESS", action)).write(mapper, arrayNode, output);
     Database.getInstance().setCurrentPage("HOMEPAGEAUTENTIFICAT");
   }
 
   @Override
   public void executeError(ObjectMapper mapper, ArrayNode arrayNode, File output) throws IOException {
-    getOutput("ERROR", action.getFeature()).write(mapper, arrayNode, output);
+    Objects.requireNonNull(getOutput("ERROR", action)).write(mapper, arrayNode, output);
 //  if there was an error in login, we go back to HOMEPAGENEAUTENTIFICAT only if we were in login page
-    if (Database.getInstance().getCurrentPage().equalsIgnoreCase("LOGIN")) {
+    if (Database.getInstance().getCurrentPage().equalsIgnoreCase("LOGIN"))
       Database.getInstance().setCurrentPage("HOMEPAGENEAUTENTIFICAT");
-    }
   }
 }

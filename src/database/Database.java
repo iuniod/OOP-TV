@@ -32,6 +32,8 @@ public class Database {
   public void setDatabase(final InputFormat inputFormat) {
     users = inputFormat.getUsers();
     movies = inputFormat.getMovies();
+    setCurrentPage("HOMEPAGENEAUTENTIFICAT");
+    setCurrentUser(null);
   }
 
   public void setCurrentPage(final String currentPage) {
@@ -39,12 +41,11 @@ public class Database {
   }
 
   public void setCurrentUser(final Credential credentials) {
-    for (User user : users) {
+    for (User user : users)
       if (user.getCredentials().equals(credentials)) {
         currentUser = user;
         return;
       }
-    }
 
     currentUser = null;
   }
@@ -59,6 +60,16 @@ public class Database {
 
   public ArrayList<Movie> getMovies() {
     return movies;
+  }
+
+  public ArrayList<String> getMoviesTitles() {
+    ArrayList<String> moviesTitles = new ArrayList<>();
+
+    for (Movie movie : movies)
+      if (!movie.getCountriesBanned().contains(currentUser.getCredentials().getCountry()))
+        moviesTitles.add(movie.getName());
+
+    return moviesTitles;
   }
 
   public String getCurrentPage() {
@@ -78,18 +89,18 @@ public class Database {
   }
 
   public boolean containsUser(final Credential credentials) {
-    for (User u : users) {
-      if (u.getCredentials().getName().equals(credentials.getName()))
+    for (User user : users)
+      if (user.getCredentials().getName().equals(credentials.getName()))
         return true;
-    }
+
     return false;
   }
 
   public boolean verifyPassword(final Credential credentials) {
-    for (User u : users) {
-      if (u.getCredentials().equals(credentials))
+    for (User user : users)
+      if (user.getCredentials().equals(credentials))
         return true;
-    }
+
     return false;
   }
 

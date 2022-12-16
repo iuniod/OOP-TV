@@ -235,6 +235,34 @@
     "ratedMovies" : [ ]
   }
 }, {
+  "error" : null,
+  "currentMoviesList" : [ {
+    "name" : "Indiana Jones and the Temple of Doom",
+    "year" : 2012,
+    "duration" : 88,
+    "genres" : [ "Drama", "Comedy", "Mystery" ],
+    "actors" : [ "Samuel Murtell", "Ansel Ryburn", "Rickert Farmery", "Ernst Malcher" ],
+    "countriesBanned" : [ "Nigeria", "Lithuania", "Burkina Faso" ],
+    "numLikes" : 0,
+    "rating" : 0.0,
+    "numRatings" : 0
+  } ],
+  "currentUser" : {
+    "credentials" : {
+      "name" : "Iancu",
+      "password" : "corega",
+      "accountType" : "standard",
+      "country" : "Japan",
+      "balance" : "50"
+    },
+    "tokensCount" : 0,
+    "numFreePremiumMovies" : 15,
+    "purchasedMovies" : [ ],
+    "watchedMovies" : [ ],
+    "likedMovies" : [ ],
+    "ratedMovies" : [ ]
+  }
+}, {
   "error" : "Error",
   "currentMoviesList" : [ ],
   "currentUser" : null
@@ -441,6 +469,34 @@
 }, {
   "error" : null,
   "currentMoviesList" : [ ],
+  "currentUser" : {
+    "credentials" : {
+      "name" : "Iancu",
+      "password" : "corega",
+      "accountType" : "standard",
+      "country" : "Japan",
+      "balance" : "50"
+    },
+    "tokensCount" : 0,
+    "numFreePremiumMovies" : 15,
+    "purchasedMovies" : [ ],
+    "watchedMovies" : [ ],
+    "likedMovies" : [ ],
+    "ratedMovies" : [ ]
+  }
+}, {
+  "error" : null,
+  "currentMoviesList" : [ {
+    "name" : "Little Foxes, The",
+    "year" : 1999,
+    "duration" : 128,
+    "genres" : [ "Horror", "Action", "Thriller" ],
+    "actors" : [ "Coleen Verheijden", "Dean McCooke", "Melamie Griswaite", "Clementine Loding" ],
+    "countriesBanned" : [ "Brazil", "Philippines", "Poland" ],
+    "numLikes" : 0,
+    "rating" : 0.0,
+    "numRatings" : 0
+  } ],
   "currentUser" : {
     "credentials" : {
       "name" : "Iancu",
