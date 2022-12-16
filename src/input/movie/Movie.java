@@ -10,7 +10,7 @@ public class Movie {
   private ArrayList<String> actors;
   private ArrayList<String> countriesBanned;
   private int numLikes = 0;
-  private int rating = 0;
+  private double rating = 0;
   private int numRatings = 0;
 
   public Movie() {
@@ -44,7 +44,7 @@ public class Movie {
     this.numLikes = numLikes;
   }
 
-  public void setRating(final int rating) {
+  public void setRating(final double rating) {
     this.rating = rating;
   }
 
@@ -80,7 +80,7 @@ public class Movie {
     return numLikes;
   }
 
-  public int getRating() {
+  public double getRating() {
     return rating;
   }
 

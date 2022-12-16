@@ -30,7 +30,6 @@ public final class Main {
         database.setDatabase(inputFormat);
         Database.getInstance().setCurrentPage("HOMEPAGENEAUTENTIFICAT");
         Database.getInstance().setCurrentUser(null);
-        Database.getInstance().setMovies(null);
 //        iterate through each command action
         for (Action action : inputFormat.getActions()) {
             AbstractFactory factory = CommandFactory.getAction(action.getType());

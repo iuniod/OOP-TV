@@ -2,6 +2,7 @@ package output;
 
 import database.Database;
 import input.movie.Movie;
+import input.user.Credential;
 import input.user.User;
 
 import java.util.ArrayList;
@@ -24,6 +25,19 @@ public class Success implements Output {
 
   @Override
   public ArrayList<Movie> currentMoviesList() {
-    return new ArrayList<Movie>();
+    ArrayList<Movie> moviesList = new ArrayList<>();
+    if (page.equalsIgnoreCase("MOVIES")) {
+      Credential credentials = Database.getInstance().getCurrentUser().getCredentials();
+      ArrayList<Movie> movies = Database.getInstance().getMovies();
+      if (!movies.isEmpty()) {
+        for (Movie movie : movies) {
+          if (!movie.getCountriesBanned().contains(credentials.getCountry())) {
+            moviesList.add(movie);
+          }
+        }
+      }
+    }
+
+    return moviesList;
   }
 }

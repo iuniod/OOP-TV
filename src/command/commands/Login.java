@@ -13,7 +13,6 @@ import java.io.IOException;
 
 public class Login extends OutputFactory implements Command {
   private final Action action;
-  private String error;
 
   public Login(final Action action) {
     this.action = action;
@@ -22,7 +21,11 @@ public class Login extends OutputFactory implements Command {
   @Override
   public boolean isExecutable() {
     Database database = Database.getInstance();
-    if (!database.getCurrentPage().toUpperCase().equals("LOGIN")) {
+    if (!database.getCurrentPage().equalsIgnoreCase("LOGIN")) {
+      return false;
+    }
+
+    if (!database.getFeatureWorkFlow().get("LOGIN").contains(action.getFeature().toUpperCase())) {
       return false;
     }
 

@@ -15,6 +15,11 @@ public class PageWorkFlow {
       Map.entry("UPGRADES", new ArrayList<>(List.of("HOMEPAGEAUTENTIFICAT", "LOGOUT", "MOVIES"))),
       Map.entry("SEE DETAILS", new ArrayList<>(List.of("HOMEPAGEAUTENTIFICAT", "MOVIES", "LOGOUT", "UPGRADES")))
   );
+  private final static Map<String, ArrayList<String>> featureWorkFlow = Map.ofEntries(
+      Map.entry("LOGIN", new ArrayList<>(List.of("LOGIN"))),
+      Map.entry("REGISTER", new ArrayList<>(List.of("REGISTER"))),
+      Map.entry("MOVIES", new ArrayList<>(List.of("SEARCH")))
+  );
   private final static PageWorkFlow instance = new PageWorkFlow();
 
   private PageWorkFlow() {
@@ -28,7 +33,15 @@ public class PageWorkFlow {
     return pageWorkFlow;
   }
 
+  public Map<String, ArrayList<String>> getFeatureWorkFlow() {
+    return featureWorkFlow;
+  }
+
   boolean checkNextPage(final String currentPage, final String nextPage) {
     return pageWorkFlow.get(currentPage).contains(nextPage);
+  }
+
+  boolean checkFeature(final String currentPage, final String nextFeature) {
+    return featureWorkFlow.get(currentPage).contains(nextFeature);
   }
 }

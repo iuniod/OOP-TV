@@ -22,7 +22,11 @@ public class Register extends OutputFactory implements Command {
   @Override
   public boolean isExecutable() {
     Database database = Database.getInstance();
-    if (!database.getCurrentPage().toUpperCase().equals("REGISTER")) {
+    if (!database.getCurrentPage().equalsIgnoreCase("REGISTER")) {
+      return false;
+    }
+
+    if (!database.getFeatureWorkFlow().get("REGISTER").contains(action.getFeature().toUpperCase())) {
       return false;
     }
 

@@ -31,11 +31,13 @@ public class ChangePage extends OutputFactory implements Command {
   }
 
   @Override
-  public void executeSuccess(ObjectMapper mapper, ArrayNode arrayNode, File myOutput) {
+  public void executeSuccess(ObjectMapper mapper, ArrayNode arrayNode, File myOutput) throws IOException {
     Database.getInstance().setCurrentPage(action.getPage());
 //  change page logout moves us to HOMEPAGENEAUTENTIFICAT
     if (Database.getInstance().getCurrentPage().equalsIgnoreCase("LOGOUT")) {
       Database.getInstance().setCurrentPage("HOMEPAGENEAUTENTIFICAT");
+    } else if (Database.getInstance().getCurrentPage().equalsIgnoreCase("MOVIES")) {
+      getOutput("SUCCESS", action.getPage()).write(mapper, arrayNode, myOutput);
     }
   }
 

@@ -73,6 +73,10 @@ public class Database {
     return pageWorkFlow.getPageWorkFlow();
   }
 
+  public Map<String, ArrayList<String>> getFeatureWorkFlow() {
+    return pageWorkFlow.getFeatureWorkFlow();
+  }
+
   public boolean containsUser(final Credential credentials) {
     for (User u : users) {
       if (u.getCredentials().getName().equals(credentials.getName()))
