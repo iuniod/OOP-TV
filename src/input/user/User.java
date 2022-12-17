@@ -75,4 +75,20 @@ public final class User {
   public ArrayList<Movie> getRatedMovies() {
     return ratedMovies;
   }
+
+  public void addPurchasedMovie(final Movie movie) {
+    purchasedMovies.add(movie);
+  }
+
+  public void addWatchedMovie(final Movie movie) {
+    watchedMovies.add(movie);
+  }
+
+  public void addLikedMovie(final Movie movie) {
+    likedMovies.add(movie);
+  }
+
+  public void addRatedMovie(final Movie movie) {
+    ratedMovies.add(movie);
+  }
 }

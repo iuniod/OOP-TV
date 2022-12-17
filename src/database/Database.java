@@ -13,6 +13,7 @@ public final class Database {
   private ArrayList<Movie> movies;
   private String currentPage;
   private User currentUser;
+  private Movie currentMovie;
   private final PageWorkFlow pageWorkFlow;
 
   private Database() {
@@ -57,6 +58,17 @@ public final class Database {
     this.movies = movies;
   }
 
+  public void setCurrentMovie(final String movie) {
+    for (Movie movie1 : movies) {
+      if (movie1.getName().equals(movie)) {
+        currentMovie = movie1;
+        return;
+      }
+    }
+
+    currentMovie = null;
+  }
+
   public ArrayList<User> getUsers() {
     return users;
   }
@@ -92,6 +104,10 @@ public final class Database {
 
   public Map<String, ArrayList<String>> getFeatureWorkFlow() {
     return pageWorkFlow.getFeatureWorkFlow();
+  }
+
+  public Movie getCurrentMovie() {
+    return currentMovie;
   }
 
   /** Return true it the user is registered with the specified credentials */

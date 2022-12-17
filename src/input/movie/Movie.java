@@ -17,7 +17,7 @@ public final class Movie {
   private int numRatings = 0;
 
   @JsonIgnore
-  private ArrayList<Integer> ratings = new ArrayList<Integer>();
+  private final ArrayList<Integer> ratings = new ArrayList<Integer>();
 
   public Movie() {
   }
@@ -100,8 +100,8 @@ public final class Movie {
     numRatings++;
 
     this.rating = 0;
-    for (int i = 0; i < ratings.size(); i++) {
-      this.rating += ratings.get(i);
+    for (Integer integer : ratings) {
+      this.rating += integer;
     }
 
     this.rating /= ratings.size();

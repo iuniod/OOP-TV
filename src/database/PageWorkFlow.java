@@ -23,7 +23,8 @@ public final class PageWorkFlow {
       Map.entry("LOGIN", new ArrayList<>(List.of("LOGIN"))),
       Map.entry("REGISTER", new ArrayList<>(List.of("REGISTER"))),
       Map.entry("MOVIES", new ArrayList<>(List.of("SEARCH", "FILTER"))),
-      Map.entry("UPGRADES", new ArrayList<>(List.of("BUY TOKENS", "BUY PREMIUM ACCOUNT")))
+      Map.entry("UPGRADES", new ArrayList<>(List.of("BUY TOKENS", "BUY PREMIUM ACCOUNT"))),
+      Map.entry("SEE DETAILS", new ArrayList<>(List.of("PURCHASE", "WATCH", "LIKE", "RATE")))
   );
   private static final PageWorkFlow INSTANCE = new PageWorkFlow();
 

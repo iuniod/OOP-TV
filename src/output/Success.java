@@ -7,9 +7,15 @@ import input.user.Credential;
 import input.user.User;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public final class Success implements Output {
+  private static final List<String> details = Arrays.asList("SEE DETAILS", "PURCHASE", "WATCH",
+      "LIKE",
+      "RATE");
   private final Action action;
+
   public Success(final Action action) {
     this.action = action;
   }
@@ -43,13 +49,8 @@ public final class Success implements Output {
           }
         }
       }
-    } else if (key.equalsIgnoreCase("SEE DETAILS")) {
-      for (Movie movie : movies) {
-        if (movie.getName().equalsIgnoreCase(action.getMovie())) {
-          moviesList.add(movie);
-          break;
-        }
-      }
+    } else if (details.contains(key.toUpperCase())) {
+      moviesList.add(Database.getInstance().getCurrentMovie());
     }
 
     return moviesList;

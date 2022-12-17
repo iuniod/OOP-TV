@@ -18,8 +18,16 @@ public final class OnPageFactory extends AbstractFactory {
         return new Filter(action);
       case "buy tokens":
         return new BuyTokens(action);
-        case "buy premium account":
+      case "buy premium account":
         return new BuyPremiumAccount(action);
+      case "purchase":
+        return new Purchase(action);
+      case "watch":
+        return new Watch(action);
+      case "like":
+        return new Like(action);
+      case "rate":
+        return new Rate(action);
       default:
         return null;
     }

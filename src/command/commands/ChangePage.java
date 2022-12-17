@@ -45,8 +45,9 @@ public final class ChangePage extends OutputFactory implements Command {
         break;
       case "SEE DETAILS":
         if (Database.getInstance().getMoviesTitles().contains(action.getMovie())) {
-          Objects.requireNonNull(getOutput("SUCCESS", action)).write(mapper, arrayNode, output);
           Database.getInstance().setCurrentPage(action.getPage());
+          Database.getInstance().setCurrentMovie(action.getMovie());
+          Objects.requireNonNull(getOutput("SUCCESS", action)).write(mapper, arrayNode, output);
         } else {
           Objects.requireNonNull(getOutput("ERROR", action)).write(mapper, arrayNode, output);
         }
