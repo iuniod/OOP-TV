@@ -2,6 +2,7 @@ Starting audit...
 [ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\checker\CheckStyleConstants.java:3:1: Utility classes should not have a public or default constructor. [HideUtilityClassConstructor]
 [ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\command\CommandFactory.java:3:1: Utility classes should not have a public or default constructor. [HideUtilityClassConstructor]
 [ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\command\commands\BuyPremiumAccount.java:49:49: '10' is a magic number. [MagicNumber]
+[ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\command\commands\Filter.java:79: Line is longer than 100 characters (found 161). [LineLength]
 [ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\command\OnPageFactory.java:3:24: Using the '.*' form of import should be avoided - command.commands.*. [AvoidStarImport]
 [ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\input\user\Credential.java:59:3: Definition of 'equals()' without corresponding definition of 'hashCode()'. [EqualsHashCode]
 [ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\input\user\User.java:10:38: '15' is a magic number. [MagicNumber]
@@ -10,4 +11,4 @@ Starting audit...
 [ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\Test.java:1: File does not end with a newline. [NewlineAtEndOfFile]
 [ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\Test.java:8:28: Using the '.*' form of import should be avoided - java.util.concurrent.*. [AvoidStarImport]
 Audit done.
-Checkstyle ends with 10 errors.
+Checkstyle ends with 11 errors.

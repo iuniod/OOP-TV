@@ -15,6 +15,8 @@ import output.Output;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 
 public final class Filter implements Command, Output {
   private final Action action;
@@ -69,14 +71,13 @@ public final class Filter implements Command, Output {
       return moviesList;
     }
 
+
     Database database = Database.getInstance();
-    Credential credentials = database.getCurrentUser().getCredentials();
-    for (Movie movie : database.getMovies()) {
-      if (isNotBanned(movie)) {
-        moviesList.add(movie);
-//        && contains(movie, action.getFilters().getContains())
-      }
-    }
+
+    moviesList =
+        (ArrayList<Movie>) database.getMovies().stream().filter(movie -> isNotBanned(movie)
+                                                                             && contains(movie, action.getFilters().getContains())).collect(Collectors.toList());
+
 
     moviesList = sortMovies(moviesList, action.getFilters().getSort());
 
@@ -95,22 +96,32 @@ public final class Filter implements Command, Output {
       return true;
     }
 
-    if (filter.getGenre() != null) {
+    if (!filter.getGenre().isEmpty()) {
       for (String genre : filter.getGenre()) {
+        boolean found = false;
         for (String movieGenre : movie.getGenres()) {
-          if (!movieGenre.equalsIgnoreCase(genre)) {
-            return false;
+          if (movieGenre.equalsIgnoreCase(genre)) {
+            found = true;
+            break;
           }
+        }
+        if (!found) {
+          return false;
         }
       }
     }
 
-    if (filter.getActors() != null) {
+    if (!filter.getActors().isEmpty()) {
       for (String actor : filter.getActors()) {
-        for (String movieGenre : movie.getActors()) {
-          if (!movieGenre.equalsIgnoreCase(actor)) {
-            return false;
+        boolean found = false;
+        for (String movieActor : movie.getActors()) {
+          if (movieActor.equalsIgnoreCase(actor)) {
+            found = true;
+            break;
           }
+        }
+        if (!found) {
+          return false;
         }
       }
     }
@@ -123,13 +134,20 @@ public final class Filter implements Command, Output {
       return moviesList;
     }
 
+    if (sort.getRating() != null) {
+      if (sort.getRating().equalsIgnoreCase("increasing")) {
+        moviesList.sort(Comparator.comparing(Movie::getRating));
+      } else {
+        moviesList.sort(Comparator.comparing(Movie::getRating).reversed());
+      }
+    }
+
     if (sort.getDuration() != null) {
-      moviesList.sort((movie1, movie2) -> {
-        if (sort.getDuration().equalsIgnoreCase("decreasing")) {
-          return movie2.getDuration() - movie1.getDuration();
-        }
-        return movie1.getDuration() - movie2.getDuration();
-      });
+      if (sort.getDuration().equalsIgnoreCase("increasing")) {
+        moviesList.sort(Comparator.comparingInt(Movie::getDuration));
+      } else {
+        moviesList.sort(Comparator.comparingInt(Movie::getDuration).reversed());
+      }
     }
 
     return moviesList;
