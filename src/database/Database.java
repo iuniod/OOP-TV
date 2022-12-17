@@ -14,11 +14,13 @@ public final class Database {
   private String currentPage;
   private User currentUser;
   private Movie currentMovie;
+  private ArrayList<Movie> currentMovieList;
   private final PageWorkFlow pageWorkFlow;
 
   private Database() {
     users = new ArrayList<>();
     movies = new ArrayList<>();
+    currentMovieList = new ArrayList<>();
     currentPage = "HOMEPAGENEAUTENTIFICAT";
     currentUser = new User();
     pageWorkFlow = PageWorkFlow.getInstance();
@@ -71,6 +73,10 @@ public final class Database {
     currentMovie = null;
   }
 
+  public void setCurrentMovieList(final ArrayList<Movie> currentMovieList) {
+    this.currentMovieList = currentMovieList;
+  }
+
   public ArrayList<User> getUsers() {
     return users;
   }
@@ -83,7 +89,7 @@ public final class Database {
   public ArrayList<String> getMoviesTitles() {
     ArrayList<String> moviesTitles = new ArrayList<>();
 
-    for (Movie movie : movies) {
+    for (Movie movie : currentMovieList) {
       if (!(movie.getCountriesBanned().contains(currentUser.getCredentials().getCountry()))) {
         moviesTitles.add(movie.getName());
       }
@@ -110,6 +116,10 @@ public final class Database {
 
   public Movie getCurrentMovie() {
     return currentMovie;
+  }
+
+  public ArrayList<Movie> getCurrentMovieList() {
+    return currentMovieList;
   }
 
   /** Return true it the user is registered with the specified credentials */

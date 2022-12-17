@@ -76,10 +76,12 @@ public final class Filter implements Command, Output {
 
     moviesList =
         (ArrayList<Movie>) database.getMovies().stream().filter(movie -> isNotBanned(movie)
-                                                                             && contains(movie, action.getFilters().getContains())).collect(Collectors.toList());
+        && contains(movie, action.getFilters().getContains())).collect(Collectors.toList());
 
 
     moviesList = sortMovies(moviesList, action.getFilters().getSort());
+
+    Database.getInstance().setCurrentMovieList(moviesList);
 
     return moviesList;
   }

@@ -35,13 +35,18 @@ public final class ChangePage extends OutputFactory implements Command {
   @Override
   public void executeSuccess(final ObjectMapper mapper,
                              final ArrayNode arrayNode, final File output) throws IOException {
+    Database database = Database.getInstance();
     switch (action.getPage().toUpperCase()) {
       case "LOGOUT":
-        Database.getInstance().setCurrentPage("HOMEPAGENEAUTENTIFICAT");
+        database.setCurrentPage("HOMEPAGENEAUTENTIFICAT");
         break;
       case "MOVIES":
         Objects.requireNonNull(getOutput("SUCCESS", action)).write(mapper, arrayNode, output);
-        Database.getInstance().setCurrentPage(action.getPage());
+        database.setCurrentPage(action.getPage());
+        database.setCurrentMovieList(database.getMovies().stream().filter(
+            movie -> !movie.getCountriesBanned().contains(database.getCurrentUser().getCredentials()
+                      .getCountry())).collect(java.util.stream
+                      .Collectors.toCollection(java.util.ArrayList::new)));
         break;
       case "SEE DETAILS":
         if (Database.getInstance().getMoviesTitles().contains(action.getMovie())) {
