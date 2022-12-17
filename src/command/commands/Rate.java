@@ -34,6 +34,10 @@ public final class Rate extends OutputFactory implements Command {
       return false;
     }
 
+    if (action.getRate() > 5 || action.getRate() <= 0) {
+      return false;
+    }
+
     return database.getCurrentUser().getWatchedMovies().contains(database.getCurrentMovie());
   }
 
@@ -46,6 +50,7 @@ public final class Rate extends OutputFactory implements Command {
   @Override
   public void executeSuccess(final ObjectMapper mapper,
                              final ArrayNode arrayNode, final File output) throws IOException {
+
     Database.getInstance().getCurrentUser().addRatedMovie(Database.getInstance().getCurrentMovie());
     Database.getInstance().getCurrentMovie().addRating(action.getRate());
     Objects.requireNonNull(getOutput("SUCCESS", action)).write(mapper, arrayNode, output);
