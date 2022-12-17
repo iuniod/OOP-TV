@@ -29,8 +29,8 @@ public final class Rate extends OutputFactory implements Command {
     if (!database.getFeatureWorkFlow().get("SEE DETAILS").contains(feature)) {
       return false;
     }
-    if (action.getMovie() != null &&
-            !database.getCurrentMovie().getName().equalsIgnoreCase(action.getMovie())) {
+    if (action.getMovie() != null
+            && !database.getCurrentMovie().getName().equalsIgnoreCase(action.getMovie())) {
       return false;
     }
 
@@ -38,12 +38,14 @@ public final class Rate extends OutputFactory implements Command {
   }
 
   @Override
-  public void executeError(ObjectMapper mapper, ArrayNode arrayNode, File output) throws IOException {
+  public void executeError(final ObjectMapper mapper,
+                           final ArrayNode arrayNode, final File output) throws IOException {
     Objects.requireNonNull(getOutput("ERROR", action)).write(mapper, arrayNode, output);
   }
 
   @Override
-  public void executeSuccess(ObjectMapper mapper, ArrayNode arrayNode, File output) throws IOException {
+  public void executeSuccess(final ObjectMapper mapper,
+                             final ArrayNode arrayNode, final File output) throws IOException {
     Database.getInstance().getCurrentUser().addRatedMovie(Database.getInstance().getCurrentMovie());
     Database.getInstance().getCurrentMovie().addRating(action.getRate());
     Objects.requireNonNull(getOutput("SUCCESS", action)).write(mapper, arrayNode, output);

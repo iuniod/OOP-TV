@@ -94,17 +94,18 @@ public final class Movie {
     return numRatings;
   }
 
-  public void addRating(final int rating) {
-    ratings.add(rating);
+  /** Add a rating to the movie and update the rating and number of ratings */
+  public void addRating(final int rate) {
+    ratings.add(rate);
 
     numRatings++;
 
-    this.rating = 0;
+    rating = 0;
     for (Integer integer : ratings) {
-      this.rating += integer;
+      rating += integer;
     }
 
-    this.rating /= ratings.size();
-    new DecimalFormat("0.00").format(this.rating);
+    rating /= ratings.size();
+    new DecimalFormat("0.00").format(rating);
   }
 }

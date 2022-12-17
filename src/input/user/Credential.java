@@ -51,6 +51,7 @@ public final class Credential {
     return Integer.toString(balance);
   }
 
+  /** Return the balance of the user in int format. */
   public int findBalanceCount() {
     return balance;
   }

@@ -76,18 +76,22 @@ public final class User {
     return ratedMovies;
   }
 
+  /** Add a movie to the list of purchased movies. */
   public void addPurchasedMovie(final Movie movie) {
     purchasedMovies.add(movie);
   }
 
+  /** Add a movie to the watched movies list */
   public void addWatchedMovie(final Movie movie) {
     watchedMovies.add(movie);
   }
 
+  /** Add a movie to the liked movies list */
   public void addLikedMovie(final Movie movie) {
     likedMovies.add(movie);
   }
 
+  /** Add a movie to the rated movies list */
   public void addRatedMovie(final Movie movie) {
     ratedMovies.add(movie);
   }

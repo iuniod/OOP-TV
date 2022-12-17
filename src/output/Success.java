@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public final class Success implements Output {
-  private static final List<String> details = Arrays.asList("SEE DETAILS", "PURCHASE", "WATCH",
+  private static final List<String> DETAILS = Arrays.asList("SEE DETAILS", "PURCHASE", "WATCH",
       "LIKE",
       "RATE");
   private final Action action;
@@ -49,7 +49,7 @@ public final class Success implements Output {
           }
         }
       }
-    } else if (details.contains(key.toUpperCase())) {
+    } else if (DETAILS.contains(key.toUpperCase())) {
       moviesList.add(Database.getInstance().getCurrentMovie());
     }
 

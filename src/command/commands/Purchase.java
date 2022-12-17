@@ -31,8 +31,8 @@ public final class Purchase extends OutputFactory implements Command {
       return false;
     }
 
-    if (action.getMovie() != null &&
-            !database.getCurrentMovie().getName().equalsIgnoreCase(action.getMovie())) {
+    if (action.getMovie() != null
+            && !database.getCurrentMovie().getName().equalsIgnoreCase(action.getMovie())) {
       return false;
     }
 

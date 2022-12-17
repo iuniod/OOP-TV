@@ -29,8 +29,8 @@ public final class Like extends OutputFactory implements Command {
     if (!database.getFeatureWorkFlow().get("SEE DETAILS").contains(feature)) {
       return false;
     }
-    if (action.getMovie() != null &&
-            !database.getCurrentMovie().getName().equalsIgnoreCase(action.getMovie())) {
+    if (action.getMovie() != null
+            && !database.getCurrentMovie().getName().equalsIgnoreCase(action.getMovie())) {
       return false;
     }
 
@@ -47,7 +47,8 @@ public final class Like extends OutputFactory implements Command {
   public void executeSuccess(final ObjectMapper mapper,
                              final ArrayNode arrayNode, final File output) throws IOException {
     Database.getInstance().getCurrentUser().addLikedMovie(Database.getInstance().getCurrentMovie());
-    Database.getInstance().getCurrentMovie().setNumLikes(Database.getInstance().getCurrentMovie().getNumLikes() + 1);
+    Database.getInstance().getCurrentMovie()
+        .setNumLikes(Database.getInstance().getCurrentMovie().getNumLikes() + 1);
     Objects.requireNonNull(getOutput("SUCCESS", action)).write(mapper, arrayNode, output);
   }
 }

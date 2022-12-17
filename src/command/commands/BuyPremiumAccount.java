@@ -15,7 +15,7 @@ import java.util.Objects;
 public final class BuyPremiumAccount extends OutputFactory implements Command {
   private final Action action;
 
-  public BuyPremiumAccount(Action action) {
+  public BuyPremiumAccount(final Action action) {
     this.action = action;
   }
 
@@ -26,7 +26,8 @@ public final class BuyPremiumAccount extends OutputFactory implements Command {
       return false;
     }
 
-    if (!database.getFeatureWorkFlow().get("UPGRADES").contains(action.getFeature().toUpperCase())) {
+    String feature = action.getFeature().toUpperCase();
+    if (!database.getFeatureWorkFlow().get("UPGRADES").contains(feature)) {
       return false;
     }
 
@@ -35,12 +36,14 @@ public final class BuyPremiumAccount extends OutputFactory implements Command {
   }
 
   @Override
-  public void executeError(ObjectMapper mapper, ArrayNode arrayNode, File output) throws IOException {
+  public void executeError(final ObjectMapper mapper,
+                           final ArrayNode arrayNode, final File output) throws IOException {
     Objects.requireNonNull(getOutput("ERROR", action)).write(mapper, arrayNode, output);
   }
 
   @Override
-  public void executeSuccess(ObjectMapper mapper, ArrayNode arrayNode, File output) throws IOException {
+  public void executeSuccess(final ObjectMapper mapper,
+                             final ArrayNode arrayNode, final File output) throws IOException {
     Database database = Database.getInstance();
     User user = database.getCurrentUser();
     user.setTokensCount(user.getTokensCount() - 10);

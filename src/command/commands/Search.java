@@ -39,7 +39,8 @@ public final class Search implements Command, Output {
     Credential credentials = Database.getInstance().getCurrentUser().getCredentials();
     movies.clear();
     for (Movie movie : database.getMovies()) {
-      if ((movie.getCountriesBanned().isEmpty() || !movie.getCountriesBanned().contains(credentials.getCountry()))
+      if ((movie.getCountriesBanned().isEmpty()
+               || !movie.getCountriesBanned().contains(credentials.getCountry()))
                      && movie.getName().startsWith(action.getStartsWith())) {
         movies.add(movie);
       }

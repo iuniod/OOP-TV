@@ -58,6 +58,8 @@ public final class Database {
     this.movies = movies;
   }
 
+  /** Set the current movie if the movie is in the database, otherwise set the current movie to
+   * null*/
   public void setCurrentMovie(final String movie) {
     for (Movie movie1 : movies) {
       if (movie1.getName().equals(movie)) {
