@@ -8,7 +8,7 @@ import input.user.User;
 
 import java.util.ArrayList;
 
-public class Success implements Output {
+public final class Success implements Output {
   private final Action action;
   public Success(final Action action) {
     this.action = action;
@@ -31,20 +31,25 @@ public class Success implements Output {
     Credential credentials = Database.getInstance().getCurrentUser().getCredentials();
     String key = action.getPage();
 
-    if (key == null)
+    if (key == null) {
       key = action.getFeature();
+    }
 
     if (key.equalsIgnoreCase("MOVIES")) {
-      if (!movies.isEmpty())
-        for (Movie movie : movies)
-          if (!movie.getCountriesBanned().contains(credentials.getCountry()))
+      if (!movies.isEmpty()) {
+        for (Movie movie : movies) {
+          if (!movie.getCountriesBanned().contains(credentials.getCountry())) {
             moviesList.add(movie);
+          }
+        }
+      }
     } else if (key.equalsIgnoreCase("SEE DETAILS")) {
-      for (Movie movie : movies)
+      for (Movie movie : movies) {
         if (movie.getName().equalsIgnoreCase(action.getMovie())) {
           moviesList.add(movie);
           break;
         }
+      }
     }
 
     return moviesList;

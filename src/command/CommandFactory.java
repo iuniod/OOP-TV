@@ -1,17 +1,15 @@
 package command;
 
-public class CommandFactory {
+public final class CommandFactory {
+  /** Factory pattern. Returns the correct factory according to the action type. */
   public static AbstractFactory getAction(final String actionType) {
     switch (actionType) {
-      case "on page":{
+      case "on page":
         return new OnPageFactory();
-      }
-      case "change page": {
+      case "change page":
         return new ChangePageFactory();
-      }
-      default: {
+      default:
         return null;
-      }
     }
   }
 }

@@ -207,9 +207,9 @@
       "password" : "corega",
       "accountType" : "standard",
       "country" : "Japan",
-      "balance" : "50"
+      "balance" : "0"
     },
-    "tokensCount" : 0,
+    "tokensCount" : 50,
     "numFreePremiumMovies" : 15,
     "purchasedMovies" : [ ],
     "watchedMovies" : [ ],
@@ -235,9 +235,9 @@
       "password" : "corega",
       "accountType" : "standard",
       "country" : "Japan",
-      "balance" : "50"
+      "balance" : "0"
     },
-    "tokensCount" : 0,
+    "tokensCount" : 50,
     "numFreePremiumMovies" : 15,
     "purchasedMovies" : [ ],
     "watchedMovies" : [ ],

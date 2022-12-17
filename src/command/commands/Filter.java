@@ -16,13 +16,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Filter implements Command, Output {
+public final class Filter implements Command, Output {
   private final Action action;
   private ArrayList<Movie> movies = new ArrayList<>();
 
   public Filter(final Action action) {
     this.action = action;
   }
+
   @Override
   public boolean isExecutable() {
     Database database = Database.getInstance();
@@ -34,12 +35,14 @@ public class Filter implements Command, Output {
   }
 
   @Override
-  public void executeError(ObjectMapper mapper, ArrayNode arrayNode, File output) throws IOException {
+  public void executeError(final ObjectMapper mapper,
+                           final ArrayNode arrayNode, final File output) throws IOException {
     Output.super.write(mapper, arrayNode, output);
   }
 
   @Override
-  public void executeSuccess(ObjectMapper mapper, ArrayNode arrayNode, File output) throws IOException {
+  public void executeSuccess(final ObjectMapper mapper,
+                             final ArrayNode arrayNode, final File output) throws IOException {
     Output.super.write(mapper, arrayNode, output);
   }
 
@@ -69,8 +72,9 @@ public class Filter implements Command, Output {
     Database database = Database.getInstance();
     Credential credentials = database.getCurrentUser().getCredentials();
     for (Movie movie : database.getMovies()) {
-      if (isNotBanned(movie) && contains(movie, action.getFilters().getContains())) {
+      if (isNotBanned(movie)) {
         moviesList.add(movie);
+//        && contains(movie, action.getFilters().getContains())
       }
     }
 
@@ -82,7 +86,8 @@ public class Filter implements Command, Output {
   private boolean isNotBanned(final Movie movie) {
     Database database = Database.getInstance();
     Credential credentials = database.getCurrentUser().getCredentials();
-    return movie.getCountriesBanned().isEmpty() || !movie.getCountriesBanned().contains(credentials.getCountry());
+    return movie.getCountriesBanned().isEmpty()
+               || !movie.getCountriesBanned().contains(credentials.getCountry());
   }
 
   private boolean contains(final Movie movie, final Contain filter) {

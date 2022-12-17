@@ -5,7 +5,7 @@ import input.user.User;
 
 import java.util.ArrayList;
 
-class OutputFormat {
+public final class OutputFormat {
   private final String error;
   private final ArrayList<Movie> currentMoviesList;
   private final User currentUser;

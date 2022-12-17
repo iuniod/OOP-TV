@@ -7,7 +7,15 @@ import java.io.File;
 import java.io.IOException;
 
 public interface Command {
+  /**
+   * Verifies that the command is valid.
+   * @return true if the command is valid, false otherwise.
+   */
   boolean isExecutable();
+
+  /**Executes the command if it is not valid and writes the result to the given file.**/
   void executeError(ObjectMapper mapper, ArrayNode arrayNode, File output) throws IOException;
+
+  /**Executes the command if it is valid and writes the result to the given file.**/
   void executeSuccess(ObjectMapper mapper, ArrayNode arrayNode, File output) throws IOException;
 }

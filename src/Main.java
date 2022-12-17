@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 
 public final class Main {
+    /** Main method. Iterates through the input file and executes the commands. */
     public static void main(final String[] args) throws IOException {
         final File input = new File(args[0]);
          File output = new File(args[1]);

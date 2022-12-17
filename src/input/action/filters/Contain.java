@@ -2,7 +2,7 @@ package input.action.filters;
 
 import java.util.ArrayList;
 
-public class Contain {
+public final class Contain {
   private ArrayList<String> actors = new ArrayList<>();
   private ArrayList<String> genre = new ArrayList<>();
 

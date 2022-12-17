@@ -6,7 +6,7 @@ import input.user.User;
 
 import java.util.ArrayList;
 
-public class InputFormat {
+public final class InputFormat {
   private ArrayList<User> users = new ArrayList<>();
   private ArrayList<Movie> movies = new ArrayList<>();
   private ArrayList<Action> actions = new ArrayList<>();

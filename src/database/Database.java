@@ -8,7 +8,7 @@ import input.user.User;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Database {
+public final class Database {
   private ArrayList<User> users;
   private ArrayList<Movie> movies;
   private String currentPage;
@@ -23,12 +23,13 @@ public class Database {
     pageWorkFlow = PageWorkFlow.getInstance();
   }
 
-  private static final Database instance = new Database();
+  private static final Database INSTANCE = new Database();
 
   public static Database getInstance() {
-    return instance;
+    return INSTANCE;
   }
 
+  /** Initialize the database with the input data  for each test */
   public void setDatabase(final InputFormat inputFormat) {
     users = inputFormat.getUsers();
     movies = inputFormat.getMovies();
@@ -40,12 +41,14 @@ public class Database {
     this.currentPage = currentPage;
   }
 
+  /** Set the current user if the user is registered, otherwise set the current user to null */
   public void setCurrentUser(final Credential credentials) {
-    for (User user : users)
+    for (User user : users) {
       if (user.getCredentials().equals(credentials)) {
         currentUser = user;
         return;
       }
+    }
 
     currentUser = null;
   }
@@ -62,12 +65,15 @@ public class Database {
     return movies;
   }
 
+  /** Return a list of movies names for the current user that are not banned in his country */
   public ArrayList<String> getMoviesTitles() {
     ArrayList<String> moviesTitles = new ArrayList<>();
 
-    for (Movie movie : movies)
-      if (!movie.getCountriesBanned().contains(currentUser.getCredentials().getCountry()))
+    for (Movie movie : movies) {
+      if (!(movie.getCountriesBanned().contains(currentUser.getCredentials().getCountry()))) {
         moviesTitles.add(movie.getName());
+      }
+    }
 
     return moviesTitles;
   }
@@ -88,23 +94,30 @@ public class Database {
     return pageWorkFlow.getFeatureWorkFlow();
   }
 
+  /** Return true it the user is registered with the specified credentials */
   public boolean containsUser(final Credential credentials) {
-    for (User user : users)
-      if (user.getCredentials().getName().equals(credentials.getName()))
+    for (User user : users) {
+      if (user.getCredentials().getName().equals(credentials.getName())) {
         return true;
+      }
+    }
 
     return false;
   }
 
+  /** Verify if the user is registered and if the password is correct */
   public boolean verifyPassword(final Credential credentials) {
-    for (User user : users)
-      if (user.getCredentials().equals(credentials))
+    for (User user : users) {
+      if (user.getCredentials().equals(credentials)) {
         return true;
+      }
+    }
 
     return false;
   }
 
-  public void addUser(User user) {
+  /** Add a new user to the database */
+  public void addUser(final User user) {
     users.add(user);
   }
 }

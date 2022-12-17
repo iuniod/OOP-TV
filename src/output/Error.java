@@ -5,7 +5,7 @@ import input.user.User;
 
 import java.util.ArrayList;
 
-public class Error implements Output {
+public final class Error implements Output {
   @Override
   public String error() {
     return "Error";

@@ -1,6 +1,6 @@
 package input.action.filters;
 
-public class Sort {
+public final class Sort {
   private String rating = null;
   private String duration = null;
 

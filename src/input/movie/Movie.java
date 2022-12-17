@@ -1,8 +1,11 @@
 package input.movie;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-public class Movie {
+public final class Movie {
   private String name;
   private int year;
   private int duration;
@@ -12,6 +15,9 @@ public class Movie {
   private int numLikes = 0;
   private double rating = 0;
   private int numRatings = 0;
+
+  @JsonIgnore
+  private ArrayList<Integer> ratings = new ArrayList<Integer>();
 
   public Movie() {
   }
@@ -88,4 +94,17 @@ public class Movie {
     return numRatings;
   }
 
+  public void addRating(final int rating) {
+    ratings.add(rating);
+
+    numRatings++;
+
+    this.rating = 0;
+    for (int i = 0; i < ratings.size(); i++) {
+      this.rating += ratings.get(i);
+    }
+
+    this.rating /= ratings.size();
+    new DecimalFormat("0.00").format(this.rating);
+  }
 }

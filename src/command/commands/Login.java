@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
-public class Login extends OutputFactory implements Command {
+public final class Login extends OutputFactory implements Command {
   private final Action action;
 
   public Login(final Action action) {
@@ -22,21 +22,25 @@ public class Login extends OutputFactory implements Command {
   @Override
   public boolean isExecutable() {
     Database database = Database.getInstance();
-    if (!database.getCurrentPage().equalsIgnoreCase("LOGIN"))
+    if (!database.getCurrentPage().equalsIgnoreCase("LOGIN")) {
       return false;
+    }
 
-    if (!database.getFeatureWorkFlow().get("LOGIN").contains(action.getFeature().toUpperCase()))
+    if (!database.getFeatureWorkFlow().get("LOGIN").contains(action.getFeature().toUpperCase())) {
       return false;
+    }
 
     Credential credentials = action.getCredentials();
-    if (credentials == null || !database.containsUser(credentials))
+    if (credentials == null || !database.containsUser(credentials)) {
       return false;
+    }
 
     return database.verifyPassword(credentials);
   }
 
   @Override
-  public void executeSuccess(ObjectMapper mapper, ArrayNode arrayNode, File output) throws IOException {
+  public void executeSuccess(final ObjectMapper mapper,
+                             final ArrayNode arrayNode, final File output) throws IOException {
     Database database = Database.getInstance();
     database.setCurrentUser(action.getCredentials());
     Objects.requireNonNull(getOutput("SUCCESS", action)).write(mapper, arrayNode, output);
@@ -44,10 +48,12 @@ public class Login extends OutputFactory implements Command {
   }
 
   @Override
-  public void executeError(ObjectMapper mapper, ArrayNode arrayNode, File output) throws IOException {
+  public void executeError(final ObjectMapper mapper,
+                           final ArrayNode arrayNode, final File output) throws IOException {
     Objects.requireNonNull(getOutput("ERROR", action)).write(mapper, arrayNode, output);
-//  if there was an error in login, we go back to HOMEPAGENEAUTENTIFICAT only if we were in login page
-    if (Database.getInstance().getCurrentPage().equalsIgnoreCase("LOGIN"))
+//  if there was an error in login, we go back to HOMEPAGENEAUTENTIFICAT only if we were in login
+    if (Database.getInstance().getCurrentPage().equalsIgnoreCase("LOGIN")) {
       Database.getInstance().setCurrentPage("HOMEPAGENEAUTENTIFICAT");
+    }
   }
 }

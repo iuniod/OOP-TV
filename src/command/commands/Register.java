@@ -11,8 +11,9 @@ import output.OutputFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
-public class Register extends OutputFactory implements Command {
+public final class Register extends OutputFactory implements Command {
   private final Action action;
 
   public Register(final Action action) {
@@ -26,7 +27,8 @@ public class Register extends OutputFactory implements Command {
       return false;
     }
 
-    if (!database.getFeatureWorkFlow().get("REGISTER").contains(action.getFeature().toUpperCase())) {
+    if (!database.getFeatureWorkFlow().get("REGISTER")
+             .contains(action.getFeature().toUpperCase())) {
       return false;
     }
 
@@ -36,19 +38,21 @@ public class Register extends OutputFactory implements Command {
   }
 
   @Override
-  public void executeSuccess(ObjectMapper mapper, ArrayNode arrayNode, File output) throws IOException {
+  public void executeSuccess(final ObjectMapper mapper,
+                             final ArrayNode arrayNode, final File output) throws IOException {
     Database database = Database.getInstance();
     Credential credentials = action.getCredentials();
     database.addUser(new User(credentials));
     database.setCurrentUser(credentials);
-    getOutput("SUCCESS", action).write(mapper, arrayNode, output);
+    Objects.requireNonNull(getOutput("SUCCESS", action)).write(mapper, arrayNode, output);
     Database.getInstance().setCurrentPage("HOMEPAGEAUTENTIFICAT");
   }
 
   @Override
-  public void executeError(ObjectMapper mapper, ArrayNode arrayNode, File output) throws IOException {
-    getOutput("ERROR", action).write(mapper, arrayNode, output);
-//  if there was an error in register, we go back to HOMEPAGENEAUTENTIFICAT only if we were in register page
+  public void executeError(final ObjectMapper mapper,
+                           final ArrayNode arrayNode, final File output) throws IOException {
+    Objects.requireNonNull(getOutput("ERROR", action)).write(mapper, arrayNode, output);
+//  if there was an error in register, we go back to HOMEPAGENEAUTENTIFICAT only if we were in reg
     if (Database.getInstance().getCurrentPage().toUpperCase().equals("REGISTER")) {
       Database.getInstance().setCurrentPage("HOMEPAGENEAUTENTIFICAT");
     }

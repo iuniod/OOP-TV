@@ -1,6 +1,6 @@
 package input.user;
 
-public class Credential {
+public final class Credential {
   private String name;
   private String password;
   private String accountType;
@@ -46,13 +46,17 @@ public class Credential {
     return country;
   }
 
+  /** Return the balance of the user in String format. */
   public String getBalance() {
-    String balanceString = Integer.toString(balance);
-    return balanceString;
+    return Integer.toString(balance);
+  }
+
+  public int findBalanceCount() {
+    return balance;
   }
 
   @Override
-  public boolean equals(Object obj) {
+  public boolean equals(final Object obj) {
     if (obj == null) {
       return false;
     }

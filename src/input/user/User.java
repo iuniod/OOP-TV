@@ -4,7 +4,7 @@ import input.movie.Movie;
 
 import java.util.ArrayList;
 
-public class User {
+public final class User {
   private Credential credentials;
   private int tokensCount = 0;
   private int numFreePremiumMovies = 15;

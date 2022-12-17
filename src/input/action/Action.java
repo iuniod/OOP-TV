@@ -3,7 +3,7 @@ package input.action;
 import input.action.filters.Filter;
 import input.user.Credential;
 
-public class Action {
+public final class Action {
   private String type;
   private String page;
   private String movie;
@@ -87,12 +87,5 @@ public class Action {
 
   public int getRate() {
     return rate;
-  }
-
-  public String toString() {
-    return "ActionInputData{" +
-            "type='" + type + '\'' +
-            ", page='" + page + '\'' +
-            ", feature='" + feature + '\'';
   }
 }
