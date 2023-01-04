@@ -12,15 +12,15 @@ import input.user.Credential;
 import input.user.User;
 import output.Output;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 
+import static database.Constants.*;
+
 public final class Filter implements Command, Output {
   private final Action action;
-  private ArrayList<Movie> movies = new ArrayList<>();
 
   public Filter(final Action action) {
     this.action = action;
@@ -29,39 +29,33 @@ public final class Filter implements Command, Output {
   @Override
   public boolean isExecutable() {
     Database database = Database.getInstance();
-    if (!database.getCurrentPage().equalsIgnoreCase("MOVIES")) {
+    if (!database.getCurrentPage().equalsIgnoreCase(MOVIES)) {
       return false;
     }
 
-    return database.getFeatureWorkFlow().get("MOVIES").contains(action.getFeature().toUpperCase());
+    return database.getFeatureWorkFlow().get(MOVIES).contains(action.getFeature().toUpperCase());
   }
 
   @Override
   public void executeError(final ObjectMapper mapper,
-                           final ArrayNode arrayNode, final File output) throws IOException {
-    Output.super.write(mapper, arrayNode, output);
+                           final ArrayNode arrayNode) throws IOException {
+    Output.super.write(mapper, arrayNode);
   }
 
   @Override
   public void executeSuccess(final ObjectMapper mapper,
-                             final ArrayNode arrayNode, final File output) throws IOException {
-    Output.super.write(mapper, arrayNode, output);
+                             final ArrayNode arrayNode) throws IOException {
+    Output.super.write(mapper, arrayNode);
   }
 
   @Override
   public String error() {
-    if (isExecutable()) {
-      return null;
-    }
-    return "Error";
+    return isExecutable() ? null : OUTPUTERROR;
   }
 
   @Override
   public User currentUser() {
-    if (isExecutable()) {
-      return Database.getInstance().getCurrentUser();
-    }
-    return null;
+    return isExecutable() ? Database.getInstance().getCurrentUser() : null;
   }
 
   @Override
@@ -71,13 +65,11 @@ public final class Filter implements Command, Output {
       return moviesList;
     }
 
-
     Database database = Database.getInstance();
 
     moviesList =
         (ArrayList<Movie>) database.getMovies().stream().filter(movie -> isNotBanned(movie)
         && contains(movie, action.getFilters().getContains())).collect(Collectors.toList());
-
 
     moviesList = sortMovies(moviesList, action.getFilters().getSort());
 
@@ -99,32 +91,16 @@ public final class Filter implements Command, Output {
     }
 
     if (!filter.getGenre().isEmpty()) {
-      for (String genre : filter.getGenre()) {
-        boolean found = false;
-        for (String movieGenre : movie.getGenres()) {
-          if (movieGenre.equalsIgnoreCase(genre)) {
-            found = true;
-            break;
-          }
-        }
-        if (!found) {
-          return false;
-        }
+      if (!((int) filter.getGenre().stream().filter(genre ->
+          movie.getGenres().contains(genre)).count() == filter.getGenre().size())) {
+        return false;
       }
     }
 
     if (!filter.getActors().isEmpty()) {
-      for (String actor : filter.getActors()) {
-        boolean found = false;
-        for (String movieActor : movie.getActors()) {
-          if (movieActor.equalsIgnoreCase(actor)) {
-            found = true;
-            break;
-          }
-        }
-        if (!found) {
-          return false;
-        }
+      if (!((int) filter.getActors().stream().filter(actor ->
+          movie.getActors().contains(actor)).count() == filter.getActors().size())) {
+        return false;
       }
     }
 
@@ -137,7 +113,7 @@ public final class Filter implements Command, Output {
     }
 
     if (sort.getRating() != null) {
-      if (sort.getRating().equalsIgnoreCase("increasing")) {
+      if (sort.getRating().equalsIgnoreCase(INCREASING)) {
         moviesList.sort(Comparator.comparing(Movie::getRating));
       } else {
         moviesList.sort(Comparator.comparing(Movie::getRating).reversed());
@@ -145,7 +121,7 @@ public final class Filter implements Command, Output {
     }
 
     if (sort.getDuration() != null) {
-      if (sort.getDuration().equalsIgnoreCase("increasing")) {
+      if (sort.getDuration().equalsIgnoreCase(INCREASING)) {
         moviesList.sort(Comparator.comparingInt(Movie::getDuration));
       } else {
         moviesList.sort(Comparator.comparingInt(Movie::getDuration).reversed());

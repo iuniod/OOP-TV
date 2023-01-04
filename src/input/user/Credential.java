@@ -1,5 +1,7 @@
 package input.user;
 
+import java.util.Objects;
+
 public final class Credential {
   private String name;
   private String password;
@@ -66,5 +68,10 @@ public final class Credential {
     }
     final Credential other = (Credential) obj;
     return this.name.equals(other.name) && this.password.equals(other.password);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(name, password);
   }
 }

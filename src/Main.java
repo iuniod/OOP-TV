@@ -13,42 +13,43 @@ import input.action.Action;
 import java.io.File;
 import java.io.IOException;
 
+import static database.Constants.*;
+
 public final class Main {
-    /** Main method. Iterates through the input file and executes the commands. */
-    public static void main(final String[] args) throws IOException {
-        final File input = new File(args[0]);
-         File output = new File(args[1]);
-        String test = args[0].substring(args[0].lastIndexOf("\\") + 1);
-         File myOutput = new File("checker/resources/out/" + test);
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-        ArrayNode arrayNode = mapper.createArrayNode();
+  /**
+   * Main method. Iterates through the input file and executes the commands.
+   */
+  public static void main(final String[] args) throws IOException {
+    final File input = new File(args[0]);
+    File output = new File(args[1]);
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+    ArrayNode arrayNode = mapper.createArrayNode();
 
 //      read the input file
-        InputFormat inputFormat = mapper.readValue(input, InputFormat.class);
-        Database database = Database.getInstance();
-        database.setDatabase(inputFormat);
+    InputFormat inputFormat = mapper.readValue(input, InputFormat.class);
+    Database database = Database.getInstance();
+    database.setDatabase(inputFormat);
 //        iterate through each command action
-        for (Action action : inputFormat.getActions()) {
-            AbstractFactory factory = CommandFactory.getAction(action.getType());
-            if (factory == null) {
-                continue;
-            } else {
-                Command command = factory.getAction(action);
-                if (command == null) {
-                    continue;
-                } else {
-                    if (command.isExecutable()) {
-                        command.executeSuccess(mapper, arrayNode, myOutput);
-                    } else {
-                        command.executeError(mapper, arrayNode, myOutput);
-                    }
-                }
-            }
+    for (Action action : inputFormat.getActions()) {
+      AbstractFactory factory = CommandFactory.getAction(action.getType());
+      if (factory == null) {
+        System.out.println(INVALID_COMMAND_TYPE);
+      } else {
+        Command command = factory.getAction(action);
+        if (command == null) {
+          System.err.println(INVALID_COMMAND);
+        } else {
+          if (command.isExecutable()) {
+            command.executeSuccess(mapper, arrayNode);
+          } else {
+            command.executeError(mapper, arrayNode);
+          }
         }
-
-        ObjectWriter objectWriter = mapper.writerWithDefaultPrettyPrinter();
-        objectWriter.writeValue(output, arrayNode);
-        objectWriter.writeValue(myOutput, arrayNode);
+      }
     }
+
+    ObjectWriter objectWriter = mapper.writerWithDefaultPrettyPrinter();
+    objectWriter.writeValue(output, arrayNode);
+  }
 }

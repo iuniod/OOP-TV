@@ -5,10 +5,12 @@ import input.user.User;
 
 import java.util.ArrayList;
 
+import static database.Constants.OUTPUTERROR;
+
 public final class Error implements Output {
   @Override
   public String error() {
-    return "Error";
+    return OUTPUTERROR;
   }
 
   @Override

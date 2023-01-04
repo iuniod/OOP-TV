@@ -10,10 +10,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static database.Constants.*;
+
 public final class Success implements Output {
-  private static final List<String> DETAILS = Arrays.asList("SEE DETAILS", "PURCHASE", "WATCH",
-      "LIKE",
-      "RATE");
+  private static final List<String> DETAILS = Arrays.asList(SEE_DETAILS, PURCHASE,
+      WATCH, LIKE, RATE);
   private final Action action;
 
   public Success(final Action action) {
@@ -41,7 +42,7 @@ public final class Success implements Output {
       key = action.getFeature();
     }
 
-    if (key.equalsIgnoreCase("MOVIES")) {
+    if (key.equalsIgnoreCase(MOVIES)) {
       if (!movies.isEmpty()) {
         for (Movie movie : movies) {
           if (!movie.getCountriesBanned().contains(credentials.getCountry())) {

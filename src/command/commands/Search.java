@@ -10,9 +10,10 @@ import input.user.Credential;
 import input.user.User;
 import output.Output;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import static database.Constants.*;
 
 public final class Search implements Command, Output {
   private final Action action;
@@ -26,13 +27,13 @@ public final class Search implements Command, Output {
   @Override
   public boolean isExecutable() {
     Database database = Database.getInstance();
-    if (!database.getCurrentPage().equalsIgnoreCase("MOVIES")) {
-      error = "Error";
+    if (!database.getCurrentPage().equalsIgnoreCase(MOVIES)) {
+      error = OUTPUTERROR;
       return false;
     }
 
-    if (!database.getFeatureWorkFlow().get("MOVIES").contains(action.getFeature().toUpperCase())) {
-      error = "Error";
+    if (!database.getFeatureWorkFlow().get(MOVIES).contains(action.getFeature().toUpperCase())) {
+      error = OUTPUTERROR;
       return false;
     }
 
@@ -51,14 +52,14 @@ public final class Search implements Command, Output {
 
   @Override
   public void executeError(final ObjectMapper mapper,
-                           final ArrayNode arrayNode, final File output) throws IOException {
-    Output.super.write(mapper, arrayNode, output);
+                           final ArrayNode arrayNode) throws IOException {
+    Output.super.write(mapper, arrayNode);
   }
 
   @Override
   public void executeSuccess(final ObjectMapper mapper,
-                             final ArrayNode arrayNode, final File output) throws IOException {
-    Output.super.write(mapper, arrayNode, output);
+                             final ArrayNode arrayNode) throws IOException {
+    Output.super.write(mapper, arrayNode);
   }
 
   @Override

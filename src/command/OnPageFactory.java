@@ -3,30 +3,32 @@ package command;
 import command.commands.*;
 import input.action.Action;
 
+import static database.Constants.*;
+
 public final class OnPageFactory extends AbstractFactory {
 
   @Override
   public Command getAction(final Action action) {
-    switch (action.getFeature()) {
-      case "login":
+    switch (action.getFeature().toUpperCase()) {
+      case LOGIN:
         return new Login(action);
-      case "register":
+      case REGISTER:
         return new Register(action);
-      case "search":
+      case SEARCH:
         return new Search(action);
-      case "filter":
+      case FILTER:
         return new Filter(action);
-      case "buy tokens":
+      case BUYTOKENS:
         return new BuyTokens(action);
-      case "buy premium account":
+      case BUYPREMIUMACCOUNT:
         return new BuyPremiumAccount(action);
-      case "purchase":
+      case PURCHASE:
         return new Purchase(action);
-      case "watch":
+      case WATCH:
         return new Watch(action);
-      case "like":
+      case LIKE:
         return new Like(action);
-      case "rate":
+      case RATE:
         return new Rate(action);
       default:
         return null;

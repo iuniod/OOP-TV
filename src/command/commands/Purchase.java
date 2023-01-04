@@ -8,9 +8,10 @@ import input.action.Action;
 import input.user.User;
 import output.OutputFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+
+import static database.Constants.*;
 
 public final class Purchase extends OutputFactory implements Command {
   private final Action action;
@@ -22,12 +23,12 @@ public final class Purchase extends OutputFactory implements Command {
   @Override
   public boolean isExecutable() {
     Database database = Database.getInstance();
-    if (!database.getCurrentPage().equalsIgnoreCase("SEE DETAILS")) {
+    if (!database.getCurrentPage().equalsIgnoreCase(SEE_DETAILS)) {
       return false;
     }
 
     String feature = action.getFeature().toUpperCase();
-    if (!database.getFeatureWorkFlow().get("SEE DETAILS").contains(feature)) {
+    if (!database.getFeatureWorkFlow().get(SEE_DETAILS).contains(feature)) {
       return false;
     }
 
@@ -38,9 +39,9 @@ public final class Purchase extends OutputFactory implements Command {
 
     User user = database.getCurrentUser();
     switch (user.getCredentials().getAccountType()) {
-      case "standard":
+      case STANDARD:
         return user.getTokensCount() >= 2;
-      case "premium":
+      case PREMIUM:
         return user.getNumFreePremiumMovies() != 0 || user.getTokensCount() >= 2;
       default:
         return false;
@@ -49,20 +50,20 @@ public final class Purchase extends OutputFactory implements Command {
 
   @Override
   public void executeError(final ObjectMapper mapper,
-                           final ArrayNode arrayNode, final File output) throws IOException {
-    Objects.requireNonNull(getOutput("ERROR", action)).write(mapper, arrayNode, output);
+                           final ArrayNode arrayNode) throws IOException {
+    Objects.requireNonNull(getOutput(ERROR, action)).write(mapper, arrayNode);
   }
 
   @Override
   public void executeSuccess(final ObjectMapper mapper,
-                             final ArrayNode arrayNode, final File output) throws IOException {
+                             final ArrayNode arrayNode) throws IOException {
     Database database = Database.getInstance();
     User user = database.getCurrentUser();
     switch (user.getCredentials().getAccountType()) {
-      case "standard":
+      case STANDARD:
         user.setTokensCount(user.getTokensCount() - 2);
         break;
-      case "premium":
+      case PREMIUM:
         if (user.getNumFreePremiumMovies() != 0) {
           user.setNumFreePremiumMovies(user.getNumFreePremiumMovies() - 1);
         } else {
@@ -74,6 +75,6 @@ public final class Purchase extends OutputFactory implements Command {
     }
 
     user.addPurchasedMovie(database.getCurrentMovie());
-    Objects.requireNonNull(getOutput("SUCCESS", action)).write(mapper, arrayNode, output);
+    Objects.requireNonNull(getOutput(SUCCESS, action)).write(mapper, arrayNode);
   }
 }

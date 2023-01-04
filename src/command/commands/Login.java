@@ -8,9 +8,10 @@ import input.action.Action;
 import input.user.Credential;
 import output.OutputFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+
+import static database.Constants.*;
 
 public final class Login extends OutputFactory implements Command {
   private final Action action;
@@ -22,11 +23,11 @@ public final class Login extends OutputFactory implements Command {
   @Override
   public boolean isExecutable() {
     Database database = Database.getInstance();
-    if (!database.getCurrentPage().equalsIgnoreCase("LOGIN")) {
+    if (!database.getCurrentPage().equalsIgnoreCase(LOGIN)) {
       return false;
     }
 
-    if (!database.getFeatureWorkFlow().get("LOGIN").contains(action.getFeature().toUpperCase())) {
+    if (!database.getFeatureWorkFlow().get(LOGIN).contains(action.getFeature().toUpperCase())) {
       return false;
     }
 
@@ -40,20 +41,20 @@ public final class Login extends OutputFactory implements Command {
 
   @Override
   public void executeSuccess(final ObjectMapper mapper,
-                             final ArrayNode arrayNode, final File output) throws IOException {
+                             final ArrayNode arrayNode) throws IOException {
     Database database = Database.getInstance();
     database.setCurrentUser(action.getCredentials());
-    Objects.requireNonNull(getOutput("SUCCESS", action)).write(mapper, arrayNode, output);
-    Database.getInstance().setCurrentPage("HOMEPAGEAUTENTIFICAT");
+    Objects.requireNonNull(getOutput(SUCCESS, action)).write(mapper, arrayNode);
+    Database.getInstance().setCurrentPage(HOMEPAGEAUTENTIFICAT);
   }
 
   @Override
   public void executeError(final ObjectMapper mapper,
-                           final ArrayNode arrayNode, final File output) throws IOException {
-    Objects.requireNonNull(getOutput("ERROR", action)).write(mapper, arrayNode, output);
-//  if there was an error in login, we go back to HOMEPAGENEAUTENTIFICAT only if we were in login
-    if (Database.getInstance().getCurrentPage().equalsIgnoreCase("LOGIN")) {
-      Database.getInstance().setCurrentPage("HOMEPAGENEAUTENTIFICAT");
+                           final ArrayNode arrayNode) throws IOException {
+    Objects.requireNonNull(getOutput(ERROR, action)).write(mapper, arrayNode);
+//  if there was an error in login, go back to HOMEPAGENEAUTENTIFICAT
+    if (Database.getInstance().getCurrentPage().equalsIgnoreCase(LOGIN)) {
+      Database.getInstance().setCurrentPage(HOMEPAGENEAUTENTIFICAT);
     }
   }
 }

@@ -9,9 +9,10 @@ import input.user.Credential;
 import input.user.User;
 import output.OutputFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+
+import static database.Constants.*;
 
 public final class Register extends OutputFactory implements Command {
   private final Action action;
@@ -23,11 +24,11 @@ public final class Register extends OutputFactory implements Command {
   @Override
   public boolean isExecutable() {
     Database database = Database.getInstance();
-    if (!database.getCurrentPage().equalsIgnoreCase("REGISTER")) {
+    if (!database.getCurrentPage().equalsIgnoreCase(REGISTER)) {
       return false;
     }
 
-    if (!database.getFeatureWorkFlow().get("REGISTER")
+    if (!database.getFeatureWorkFlow().get(REGISTER)
              .contains(action.getFeature().toUpperCase())) {
       return false;
     }
@@ -39,22 +40,22 @@ public final class Register extends OutputFactory implements Command {
 
   @Override
   public void executeSuccess(final ObjectMapper mapper,
-                             final ArrayNode arrayNode, final File output) throws IOException {
+                             final ArrayNode arrayNode) throws IOException {
     Database database = Database.getInstance();
     Credential credentials = action.getCredentials();
     database.addUser(new User(credentials));
     database.setCurrentUser(credentials);
-    Objects.requireNonNull(getOutput("SUCCESS", action)).write(mapper, arrayNode, output);
-    Database.getInstance().setCurrentPage("HOMEPAGEAUTENTIFICAT");
+    Objects.requireNonNull(getOutput(SUCCESS, action)).write(mapper, arrayNode);
+    Database.getInstance().setCurrentPage(HOMEPAGEAUTENTIFICAT);
   }
 
   @Override
   public void executeError(final ObjectMapper mapper,
-                           final ArrayNode arrayNode, final File output) throws IOException {
-    Objects.requireNonNull(getOutput("ERROR", action)).write(mapper, arrayNode, output);
-//  if there was an error in register, we go back to HOMEPAGENEAUTENTIFICAT only if we were in reg
-    if (Database.getInstance().getCurrentPage().toUpperCase().equals("REGISTER")) {
-      Database.getInstance().setCurrentPage("HOMEPAGENEAUTENTIFICAT");
+                           final ArrayNode arrayNode) throws IOException {
+    Objects.requireNonNull(getOutput(ERROR, action)).write(mapper, arrayNode);
+//  if there was an error in register, go back to HOMEPAGENEAUTENTIFICAT
+    if (Database.getInstance().getCurrentPage().equalsIgnoreCase(REGISTER)) {
+      Database.getInstance().setCurrentPage(HOMEPAGENEAUTENTIFICAT);
     }
   }
 }

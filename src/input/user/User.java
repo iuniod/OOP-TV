@@ -4,10 +4,12 @@ import input.movie.Movie;
 
 import java.util.ArrayList;
 
+import static database.Constants.MAX_FREE_PREMIUM_MOVIES;
+
 public final class User {
   private Credential credentials;
   private int tokensCount = 0;
-  private int numFreePremiumMovies = 15;
+  private int numFreePremiumMovies = MAX_FREE_PREMIUM_MOVIES;
   private ArrayList<Movie> purchasedMovies = new ArrayList<>();
   private ArrayList<Movie> watchedMovies = new ArrayList<>();
   private ArrayList<Movie> likedMovies = new ArrayList<>();
@@ -76,22 +78,30 @@ public final class User {
     return ratedMovies;
   }
 
-  /** Add a movie to the list of purchased movies. */
+  /**
+   * Add a movie to the list of purchased movies.
+   */
   public void addPurchasedMovie(final Movie movie) {
     purchasedMovies.add(movie);
   }
 
-  /** Add a movie to the watched movies list */
+  /**
+   * Add a movie to the watched movies list
+   */
   public void addWatchedMovie(final Movie movie) {
     watchedMovies.add(movie);
   }
 
-  /** Add a movie to the liked movies list */
+  /**
+   * Add a movie to the liked movies list
+   */
   public void addLikedMovie(final Movie movie) {
     likedMovies.add(movie);
   }
 
-  /** Add a movie to the rated movies list */
+  /**
+   * Add a movie to the rated movies list
+   */
   public void addRatedMovie(final Movie movie) {
     ratedMovies.add(movie);
   }

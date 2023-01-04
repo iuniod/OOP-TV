@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import static database.Constants.ZERO_DECIMAL;
+
 public final class Movie {
   private String name;
   private int year;
@@ -17,7 +19,7 @@ public final class Movie {
   private int numRatings = 0;
 
   @JsonIgnore
-  private final ArrayList<Integer> ratings = new ArrayList<Integer>();
+  private final ArrayList<Integer> ratings = new ArrayList<>();
 
   public Movie() {
   }
@@ -106,6 +108,6 @@ public final class Movie {
     }
 
     rating /= ratings.size();
-    new DecimalFormat("0.00").format(rating);
+    new DecimalFormat(ZERO_DECIMAL).format(rating);
   }
 }

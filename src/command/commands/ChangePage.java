@@ -7,9 +7,10 @@ import database.Database;
 import input.action.Action;
 import output.OutputFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+
+import static database.Constants.*;
 
 public final class ChangePage extends OutputFactory implements Command {
   private final Action action;
@@ -32,30 +33,40 @@ public final class ChangePage extends OutputFactory implements Command {
     return Database.getInstance().getPageWorkFlow().get(currentPage).contains(nextPage);
   }
 
+  private void executeSuccessMovie(final ObjectMapper mapper,
+                                   final ArrayNode arrayNode) throws IOException {
+    Objects.requireNonNull(getOutput(SUCCESS, action)).write(mapper, arrayNode);
+    Database database = Database.getInstance();
+    database.setCurrentPage(action.getPage());
+    database.setCurrentMovieList(database.getMovies().stream().filter(
+        movie -> !movie.getCountriesBanned().contains(database.getCurrentUser().getCredentials()
+                 .getCountry())).collect(java.util.stream
+                 .Collectors.toCollection(java.util.ArrayList::new)));
+  }
+
+  private void executeSuccessSeeDetails(final ObjectMapper mapper,
+                                        final ArrayNode arrayNode) throws IOException {
+    if (Database.getInstance().getMoviesTitles().contains(action.getMovie())) {
+      Database.getInstance().setCurrentPage(action.getPage());
+      Database.getInstance().setCurrentMovie(action.getMovie());
+      Objects.requireNonNull(getOutput(SUCCESS, action)).write(mapper, arrayNode);
+    } else {
+      Objects.requireNonNull(getOutput(ERROR, action)).write(mapper, arrayNode);
+    }
+  }
+
   @Override
   public void executeSuccess(final ObjectMapper mapper,
-                             final ArrayNode arrayNode, final File output) throws IOException {
-    Database database = Database.getInstance();
+                             final ArrayNode arrayNode) throws IOException {
     switch (action.getPage().toUpperCase()) {
-      case "LOGOUT":
-        database.setCurrentPage("HOMEPAGENEAUTENTIFICAT");
+      case LOGOUT:
+        Database.getInstance().setCurrentPage(HOMEPAGENEAUTENTIFICAT);
         break;
-      case "MOVIES":
-        Objects.requireNonNull(getOutput("SUCCESS", action)).write(mapper, arrayNode, output);
-        database.setCurrentPage(action.getPage());
-        database.setCurrentMovieList(database.getMovies().stream().filter(
-            movie -> !movie.getCountriesBanned().contains(database.getCurrentUser().getCredentials()
-                      .getCountry())).collect(java.util.stream
-                      .Collectors.toCollection(java.util.ArrayList::new)));
+      case MOVIES:
+        executeSuccessMovie(mapper, arrayNode);
         break;
-      case "SEE DETAILS":
-        if (Database.getInstance().getMoviesTitles().contains(action.getMovie())) {
-          Database.getInstance().setCurrentPage(action.getPage());
-          Database.getInstance().setCurrentMovie(action.getMovie());
-          Objects.requireNonNull(getOutput("SUCCESS", action)).write(mapper, arrayNode, output);
-        } else {
-          Objects.requireNonNull(getOutput("ERROR", action)).write(mapper, arrayNode, output);
-        }
+      case SEE_DETAILS:
+        executeSuccessSeeDetails(mapper, arrayNode);
         break;
       default:
         Database.getInstance().setCurrentPage(action.getPage());
@@ -65,7 +76,7 @@ public final class ChangePage extends OutputFactory implements Command {
 
   @Override
   public void executeError(final ObjectMapper mapper,
-                           final ArrayNode arrayNode, final File output) throws IOException {
-    Objects.requireNonNull(getOutput("ERROR", action)).write(mapper, arrayNode, output);
+                           final ArrayNode arrayNode) throws IOException {
+    Objects.requireNonNull(getOutput(ERROR, action)).write(mapper, arrayNode);
   }
 }

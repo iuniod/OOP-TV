@@ -7,9 +7,10 @@ import database.Database;
 import input.action.Action;
 import output.OutputFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
+
+import static database.Constants.*;
 
 public final class Like extends OutputFactory implements Command {
   private final Action action;
@@ -21,12 +22,12 @@ public final class Like extends OutputFactory implements Command {
   @Override
   public boolean isExecutable() {
     Database database = Database.getInstance();
-    if (!database.getCurrentPage().equalsIgnoreCase("SEE DETAILS")) {
+    if (!database.getCurrentPage().equalsIgnoreCase(SEE_DETAILS)) {
       return false;
     }
 
     String feature = action.getFeature().toUpperCase();
-    if (!database.getFeatureWorkFlow().get("SEE DETAILS").contains(feature)) {
+    if (!database.getFeatureWorkFlow().get(SEE_DETAILS).contains(feature)) {
       return false;
     }
     if (action.getMovie() != null
@@ -39,16 +40,16 @@ public final class Like extends OutputFactory implements Command {
 
   @Override
   public void executeError(final ObjectMapper mapper,
-                           final ArrayNode arrayNode, final File output) throws IOException {
-    Objects.requireNonNull(getOutput("ERROR", action)).write(mapper, arrayNode, output);
+                           final ArrayNode arrayNode) throws IOException {
+    Objects.requireNonNull(getOutput(ERROR, action)).write(mapper, arrayNode);
   }
 
   @Override
   public void executeSuccess(final ObjectMapper mapper,
-                             final ArrayNode arrayNode, final File output) throws IOException {
+                             final ArrayNode arrayNode) throws IOException {
     Database.getInstance().getCurrentUser().addLikedMovie(Database.getInstance().getCurrentMovie());
     Database.getInstance().getCurrentMovie()
         .setNumLikes(Database.getInstance().getCurrentMovie().getNumLikes() + 1);
-    Objects.requireNonNull(getOutput("SUCCESS", action)).write(mapper, arrayNode, output);
+    Objects.requireNonNull(getOutput(SUCCESS, action)).write(mapper, arrayNode);
   }
 }

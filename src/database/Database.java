@@ -7,6 +7,7 @@ import input.user.User;
 
 import java.util.ArrayList;
 import java.util.Map;
+import static database.Constants.HOMEPAGENEAUTENTIFICAT;
 
 public final class Database {
   private ArrayList<User> users;
@@ -21,7 +22,7 @@ public final class Database {
     users = new ArrayList<>();
     movies = new ArrayList<>();
     currentMovieList = new ArrayList<>();
-    currentPage = "HOMEPAGENEAUTENTIFICAT";
+    currentPage = HOMEPAGENEAUTENTIFICAT;
     currentUser = new User();
     pageWorkFlow = PageWorkFlow.getInstance();
   }
@@ -32,7 +33,9 @@ public final class Database {
     return INSTANCE;
   }
 
-  /** Initialize the database with the input data  for each test */
+  /**
+   * Initialize the database with the input data  for each test
+   */
   public void setDatabase(final InputFormat inputFormat) {
     users = inputFormat.getUsers();
     movies = inputFormat.getMovies();
@@ -44,7 +47,9 @@ public final class Database {
     this.currentPage = currentPage;
   }
 
-  /** Set the current user if the user is registered, otherwise set the current user to null */
+  /**
+   * Set the current user if the user is registered, otherwise set the current user to null
+   */
   public void setCurrentUser(final Credential credentials) {
     for (User user : users) {
       if (user.getCredentials().equals(credentials)) {
@@ -60,8 +65,10 @@ public final class Database {
     this.movies = movies;
   }
 
-  /** Set the current movie if the movie is in the database, otherwise set the current movie to
-   * null*/
+  /**
+   * Set the current movie if the movie is in the database, otherwise set the current movie to
+   * null
+   */
   public void setCurrentMovie(final String movie) {
     for (Movie movie1 : movies) {
       if (movie1.getName().equals(movie)) {
@@ -85,15 +92,15 @@ public final class Database {
     return movies;
   }
 
-  /** Return a list of movies names for the current user that are not banned in his country */
+  /**
+   * Return a list of movies names for the current user that are not banned in his country
+   */
   public ArrayList<String> getMoviesTitles() {
     ArrayList<String> moviesTitles = new ArrayList<>();
 
-    for (Movie movie : currentMovieList) {
-      if (!(movie.getCountriesBanned().contains(currentUser.getCredentials().getCountry()))) {
-        moviesTitles.add(movie.getName());
-      }
-    }
+    String userCountry = currentUser.getCredentials().getCountry();
+    currentMovieList.stream().filter(movie -> !movie.getCountriesBanned().contains(userCountry))
+        .forEach(movie -> moviesTitles.add(movie.getName()));
 
     return moviesTitles;
   }
@@ -122,7 +129,9 @@ public final class Database {
     return currentMovieList;
   }
 
-  /** Return true it the user is registered with the specified credentials */
+  /**
+   * Return true it the user is registered with the specified credentials
+   */
   public boolean containsUser(final Credential credentials) {
     for (User user : users) {
       if (user.getCredentials().getName().equals(credentials.getName())) {
@@ -133,7 +142,9 @@ public final class Database {
     return false;
   }
 
-  /** Verify if the user is registered and if the password is correct */
+  /**
+   * Verify if the user is registered and if the password is correct
+   */
   public boolean verifyPassword(final Credential credentials) {
     for (User user : users) {
       if (user.getCredentials().equals(credentials)) {
@@ -144,7 +155,9 @@ public final class Database {
     return false;
   }
 
-  /** Add a new user to the database */
+  /**
+   * Add a new user to the database
+   */
   public void addUser(final User user) {
     users.add(user);
   }
