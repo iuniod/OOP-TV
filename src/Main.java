@@ -16,6 +16,8 @@ import java.io.IOException;
 import static database.Constants.*;
 
 public final class Main {
+  private Main() {
+  }
   /**
    * Main method. Iterates through the input file and executes the commands.
    */

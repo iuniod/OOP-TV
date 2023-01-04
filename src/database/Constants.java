@@ -1,6 +1,9 @@
 package database;
 
-public class Constants {
+public final class Constants {
+  private Constants() {
+  }
+
   public static final String ON_PAGE = "on page";
   public static final String CHANGE_PAGE = "change page";
   public static final String HOMEPAGENEAUTENTIFICAT = "HOMEPAGENEAUTENTIFICAT";

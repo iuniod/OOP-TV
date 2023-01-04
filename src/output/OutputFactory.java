@@ -5,6 +5,8 @@ import input.action.Action;
 import static database.Constants.*;
 
 public class OutputFactory {
+  protected OutputFactory() {
+  }
   /** Factory method for creating an Output object according to the error message. */
   public static Output getOutput(final String errorMessage, final Action action) {
     switch (errorMessage) {

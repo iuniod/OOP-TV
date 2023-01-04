@@ -1,7 +1,5 @@
 Starting audit...
-[ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\checker\CheckStyleConstants.java:3:1: Utility classes should not have a public or default constructor. [HideUtilityClassConstructor]
 [ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\command\CommandFactory.java:3:33: Using the '.*' form of import should be avoided - database.Constants.*. [AvoidStarImport]
-[ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\command\CommandFactory.java:5:1: Utility classes should not have a public or default constructor. [HideUtilityClassConstructor]
 [ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\command\commands\BuyPremiumAccount.java:14:33: Using the '.*' form of import should be avoided - database.Constants.*. [AvoidStarImport]
 [ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\command\commands\BuyTokens.java:14:33: Using the '.*' form of import should be avoided - database.Constants.*. [AvoidStarImport]
 [ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\command\commands\ChangePage.java:13:33: Using the '.*' form of import should be avoided - database.Constants.*. [AvoidStarImport]
@@ -15,13 +13,10 @@ Starting audit...
 [ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\command\commands\Watch.java:13:33: Using the '.*' form of import should be avoided - database.Constants.*. [AvoidStarImport]
 [ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\command\OnPageFactory.java:3:24: Using the '.*' form of import should be avoided - command.commands.*. [AvoidStarImport]
 [ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\command\OnPageFactory.java:6:33: Using the '.*' form of import should be avoided - database.Constants.*. [AvoidStarImport]
-[ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\database\Constants.java:3:1: Utility classes should not have a public or default constructor. [HideUtilityClassConstructor]
 [ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\database\PageWorkFlow.java:7:33: Using the '.*' form of import should be avoided - database.Constants.*. [AvoidStarImport]
 [ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\Main.java:16:33: Using the '.*' form of import should be avoided - database.Constants.*. [AvoidStarImport]
-[ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\Main.java:18:1: Utility classes should not have a public or default constructor. [HideUtilityClassConstructor]
 [ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\output\OutputFactory.java:5:33: Using the '.*' form of import should be avoided - database.Constants.*. [AvoidStarImport]
-[ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\output\OutputFactory.java:7:1: Utility classes should not have a public or default constructor. [HideUtilityClassConstructor]
 [ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\output\Success.java:13:33: Using the '.*' form of import should be avoided - database.Constants.*. [AvoidStarImport]
 [ERROR] C:\Users\Iustina\Desktop\OOP-TV\.\src\Test.java:8:28: Using the '.*' form of import should be avoided - java.util.concurrent.*. [AvoidStarImport]
 Audit done.
-Checkstyle ends with 24 errors.
+Checkstyle ends with 19 errors.
