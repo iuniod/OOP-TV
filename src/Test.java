@@ -146,16 +146,16 @@ public final class Test {
         score += Checkstyle.testCheckstyle();
         System.out.println("Total score: .......................... " + score + "/" + totalScore);
         System.out.println("Up to "
-                + manualScore
-                + " points will be awarded manually by the teaching assistants."
-                + " (README & OOP design)");
+                               + manualScore
+                               + " points will be awarded manually by the teaching assistants."
+                               + " (README & OOP design)");
         System.out.println("This value can be exceeded for great implementations.");
     }
 
     private static void runTest(
-            final String testFileName,
-            final Config config,
-            final Future<Object> task
+        final String testFileName,
+        final Config config,
+        final Future<Object> task
     ) {
         ObjectMapper objectMapper = new ObjectMapper();
         File refFile = new File(CHECKER_RESOURCES_FOLDER + REF_FOLDER + testFileName);
@@ -217,16 +217,16 @@ public final class Test {
     }
 
     private static void printMessage(
-            final String testFileName,
-            final String message
+        final String testFileName,
+        final String message
     ) {
         printMessage(testFileName, message, false);
     }
 
     private static void printMessage(
-            final String testFileName,
-            final String message,
-            final boolean trail
+        final String testFileName,
+        final String message,
+        final boolean trail
     ) {
         String fileName = testFileName.split("\\.")[0];
         if (trail) {
@@ -237,8 +237,8 @@ public final class Test {
     }
 
     private static int testMaxScore(
-            final Config config,
-            final String testFileName
+        final Config config,
+        final String testFileName
     ) {
         for (TestType testType : config.getTestTypes()) {
             if (testFileName.contains(testType.getType())) {

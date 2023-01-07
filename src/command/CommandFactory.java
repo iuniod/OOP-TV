@@ -12,6 +12,10 @@ public final class CommandFactory {
         return new OnPageFactory();
       case CHANGE_PAGE:
         return new ChangePageFactory();
+      case BACK:
+        return new ChangePageFactory();
+      case DATABASE:
+        return new DatabaseFactory();
       default:
         return null;
     }

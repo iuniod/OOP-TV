@@ -1,4 +1,4 @@
-package command.commands;
+package command.commands.features;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -12,13 +12,12 @@ import java.util.Objects;
 
 import static database.Constants.*;
 
-public final class Watch extends OutputFactory implements Command {
+public final class Like extends OutputFactory implements Command {
   private final Action action;
 
-  public Watch(final Action action) {
+  public Like(final Action action) {
     this.action = action;
   }
-
 
   @Override
   public boolean isExecutable() {
@@ -36,7 +35,7 @@ public final class Watch extends OutputFactory implements Command {
       return false;
     }
 
-    return database.getCurrentUser().getPurchasedMovies().contains(database.getCurrentMovie());
+    return database.getCurrentUser().getWatchedMovies().contains(database.getCurrentMovie());
   }
 
   @Override
@@ -48,8 +47,9 @@ public final class Watch extends OutputFactory implements Command {
   @Override
   public void executeSuccess(final ObjectMapper mapper,
                              final ArrayNode arrayNode) throws IOException {
-    Database.getInstance().getCurrentUser()
-        .addWatchedMovie(Database.getInstance().getCurrentMovie());
+    Database.getInstance().getCurrentUser().addLikedMovie(Database.getInstance().getCurrentMovie());
+    Database.getInstance().getCurrentMovie()
+        .setNumLikes(Database.getInstance().getCurrentMovie().getNumLikes() + 1);
     Objects.requireNonNull(getOutput(SUCCESS, action)).write(mapper, arrayNode);
   }
 }

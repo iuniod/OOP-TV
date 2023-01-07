@@ -1,4 +1,4 @@
-package command.commands;
+package command.commands.navigate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -12,10 +12,10 @@ import java.util.Objects;
 
 import static database.Constants.*;
 
-public final class ChangePage extends OutputFactory implements Command {
+public final class NextPage extends OutputFactory implements Command {
   private final Action action;
 
-  public ChangePage(final Action action) {
+  public NextPage(final Action action) {
     this.action = action;
   }
 
@@ -42,6 +42,7 @@ public final class ChangePage extends OutputFactory implements Command {
         movie -> !movie.getCountriesBanned().contains(database.getCurrentUser().getCredentials()
                  .getCountry())).collect(java.util.stream
                  .Collectors.toCollection(java.util.ArrayList::new)));
+    Database.getInstance().pushPageToStack(action);
   }
 
   private void executeSuccessSeeDetails(final ObjectMapper mapper,
@@ -50,9 +51,17 @@ public final class ChangePage extends OutputFactory implements Command {
       Database.getInstance().setCurrentPage(action.getPage());
       Database.getInstance().setCurrentMovie(action.getMovie());
       Objects.requireNonNull(getOutput(SUCCESS, action)).write(mapper, arrayNode);
+      Database.getInstance().pushPageToStack(action);
     } else {
       Objects.requireNonNull(getOutput(ERROR, action)).write(mapper, arrayNode);
     }
+  }
+
+  private void executeSuccessLogout(final ObjectMapper mapper,
+                                     final ArrayNode arrayNode) throws IOException {
+    Database.getInstance().setCurrentPage(HOMEPAGENEAUTENTIFICAT);
+    Database.getInstance().setCurrentUser(null);
+    Database.getInstance().clearStack();
   }
 
   @Override
@@ -60,7 +69,7 @@ public final class ChangePage extends OutputFactory implements Command {
                              final ArrayNode arrayNode) throws IOException {
     switch (action.getPage().toUpperCase()) {
       case LOGOUT:
-        Database.getInstance().setCurrentPage(HOMEPAGENEAUTENTIFICAT);
+        executeSuccessLogout(mapper, arrayNode);
         break;
       case MOVIES:
         executeSuccessMovie(mapper, arrayNode);
@@ -70,6 +79,9 @@ public final class ChangePage extends OutputFactory implements Command {
         break;
       default:
         Database.getInstance().setCurrentPage(action.getPage());
+        if (action.getPage().equalsIgnoreCase(UPGRADES)) {
+          Database.getInstance().pushPageToStack(action);
+        }
         break;
     }
   }

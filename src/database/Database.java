@@ -1,8 +1,10 @@
 package database;
 
 import input.InputFormat;
+import input.action.Action;
 import input.movie.Movie;
 import input.user.Credential;
+import command.commands.database.notify.ObserverNotification;
 import input.user.User;
 
 import java.util.ArrayList;
@@ -17,6 +19,9 @@ public final class Database {
   private Movie currentMovie;
   private ArrayList<Movie> currentMovieList;
   private final PageWorkFlow pageWorkFlow;
+  private ArrayList<Action> stackOfPages;
+
+  private ObserverNotification notifications;
 
   private Database() {
     users = new ArrayList<>();
@@ -25,6 +30,8 @@ public final class Database {
     currentPage = HOMEPAGENEAUTENTIFICAT;
     currentUser = new User();
     pageWorkFlow = PageWorkFlow.getInstance();
+    stackOfPages = new ArrayList<>();
+    notifications = new ObserverNotification();
   }
 
   private static final Database INSTANCE = new Database();
@@ -41,6 +48,7 @@ public final class Database {
     movies = inputFormat.getMovies();
     setCurrentPage("HOMEPAGENEAUTENTIFICAT");
     setCurrentUser(null);
+    stackOfPages.clear();
   }
 
   public void setCurrentPage(final String currentPage) {
@@ -84,6 +92,10 @@ public final class Database {
     this.currentMovieList = currentMovieList;
   }
 
+  public void setNotifications(final ObserverNotification notifications) {
+    this.notifications = notifications;
+  }
+
   public ArrayList<User> getUsers() {
     return users;
   }
@@ -92,9 +104,7 @@ public final class Database {
     return movies;
   }
 
-  /**
-   * Return a list of movies names for the current user that are not banned in his country
-   */
+  /** Return a list of movies names for the current user that are not banned in his country.*/
   public ArrayList<String> getMoviesTitles() {
     ArrayList<String> moviesTitles = new ArrayList<>();
 
@@ -129,9 +139,11 @@ public final class Database {
     return currentMovieList;
   }
 
-  /**
-   * Return true it the user is registered with the specified credentials
-   */
+  public ObserverNotification getNotifications() {
+    return notifications;
+  }
+
+  /** Return true it the user is registered with the specified credentials.*/
   public boolean containsUser(final Credential credentials) {
     for (User user : users) {
       if (user.getCredentials().getName().equals(credentials.getName())) {
@@ -142,9 +154,7 @@ public final class Database {
     return false;
   }
 
-  /**
-   * Verify if the user is registered and if the password is correct
-   */
+  /** Verify if the user is registered and if the password is correct. */
   public boolean verifyPassword(final Credential credentials) {
     for (User user : users) {
       if (user.getCredentials().equals(credentials)) {
@@ -155,10 +165,40 @@ public final class Database {
     return false;
   }
 
-  /**
-   * Add a new user to the database
-   */
+  /** Add a new user to the database. */
   public void addUser(final User user) {
     users.add(user);
+  }
+
+  /** Add a new page to the stack. */
+  public void pushPageToStack(final Action action) {
+    if (!stackOfPages.isEmpty() && peekPageFromStack().getPage().equals(action.getPage())) {
+      return;
+    }
+    stackOfPages.add(action);
+  }
+
+  /** Remove the last page from the stack. */
+  public void popPageFromStack() {
+    stackOfPages.remove(stackOfPages.size() - 1);
+  }
+
+  /** Return the last page from the stack. */
+  public Action peekPageFromStack() {
+    return stackOfPages.get(stackOfPages.size() - 1);
+  }
+
+  /** Check if there is at least 2 pages in the stack (current one and previous one). */
+  public boolean hasStackPreviousPage() {
+    return stackOfPages.size() > 1;
+  }
+
+  /** Clear the stack of pages. */
+  public void clearStack() {
+    stackOfPages.clear();
+  }
+
+  public ArrayList<Action> getStackOfPages() {
+    return stackOfPages;
   }
 }

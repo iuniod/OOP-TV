@@ -1,6 +1,7 @@
 package input.action;
 
 import input.action.filters.Filter;
+import input.movie.Movie;
 import input.user.Credential;
 
 public final class Action {
@@ -13,7 +14,11 @@ public final class Action {
   private Filter filters;
   private int count;
   private int rate;
+  private String subscribedGenre;
 
+  private Movie addedMovie;
+
+  private String deletedMovie;
   public Action() {
   }
 
@@ -49,8 +54,20 @@ public final class Action {
     this.count = count;
   }
 
+  public void setAddedMovie(final Movie addedMovie) {
+    this.addedMovie = addedMovie;
+  }
+
+  public void setDeletedMovie(final String deletedMovie) {
+    this.deletedMovie = deletedMovie;
+  }
+
   public void setRate(final int rate) {
     this.rate = rate;
+  }
+
+  public void setSubscribedGenre(final String subscribedGenre) {
+    this.subscribedGenre = subscribedGenre;
   }
 
   public String getType() {
@@ -87,5 +104,17 @@ public final class Action {
 
   public int getRate() {
     return rate;
+  }
+
+  public String getSubscribedGenre() {
+    return subscribedGenre;
+  }
+
+  public Movie getAddedMovie() {
+    return addedMovie;
+  }
+
+  public String getDeletedMovie() {
+    return deletedMovie;
   }
 }

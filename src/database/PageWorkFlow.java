@@ -17,14 +17,17 @@ public final class PageWorkFlow {
           LOGOUT, SEE_DETAILS, MOVIES))),
       Map.entry(UPGRADES, new ArrayList<>(List.of(HOMEPAGEAUTENTIFICAT, LOGOUT, MOVIES))),
       Map.entry(SEE_DETAILS, new ArrayList<>(List.of(HOMEPAGEAUTENTIFICAT,
-          MOVIES, LOGOUT, UPGRADES)))
+          MOVIES, LOGOUT, UPGRADES))),
+      Map.entry(BACK.toUpperCase(), new ArrayList<>(List.of(MOVIES, SEE_DETAILS, UPGRADES,
+          HOMEPAGEAUTENTIFICAT)))
   );
   private final Map<String, ArrayList<String>> featureWorkFlow = Map.ofEntries(
       Map.entry(LOGIN, new ArrayList<>(List.of(LOGIN))),
       Map.entry(REGISTER, new ArrayList<>(List.of(REGISTER))),
       Map.entry(MOVIES, new ArrayList<>(List.of(SEARCH, FILTER))),
-      Map.entry(UPGRADES, new ArrayList<>(List.of(BUYTOKENS, BUYPREMIUMACCOUNT))),
-      Map.entry(SEE_DETAILS, new ArrayList<>(List.of(PURCHASE, WATCH, LIKE, RATE)))
+      Map.entry(UPGRADES, new ArrayList<>(List.of(BUY_TOKENS, BUY_PREMIUM_ACCOUNT))),
+      Map.entry(SEE_DETAILS, new ArrayList<>(List.of(PURCHASE, WATCH,
+          LIKE, RATE, SUBSCRIBE.toUpperCase())))
   );
   private static final PageWorkFlow INSTANCE = new PageWorkFlow();
 

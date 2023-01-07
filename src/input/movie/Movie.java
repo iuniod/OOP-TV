@@ -1,9 +1,12 @@
 package input.movie;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import database.Database;
+import input.user.User;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static database.Constants.ZERO_DECIMAL;
 
@@ -19,7 +22,7 @@ public final class Movie {
   private int numRatings = 0;
 
   @JsonIgnore
-  private final ArrayList<Integer> ratings = new ArrayList<>();
+  private final HashMap<User, Double> ratings = new HashMap<>();
 
   public Movie() {
   }
@@ -64,8 +67,8 @@ public final class Movie {
     return name;
   }
 
-  public int getYear() {
-    return year;
+  public String getYear() {
+    return String.valueOf(year);
   }
 
   public int getDuration() {
@@ -98,16 +101,40 @@ public final class Movie {
 
   /** Add a rating to the movie and update the rating and number of ratings */
   public void addRating(final int rate) {
-    ratings.add(rate);
+    ratings.put(Database.getInstance().getCurrentUser(), (double) rate);
 
     numRatings++;
 
     rating = 0;
-    for (Integer integer : ratings) {
-      rating += integer;
+    for (Double rateValue : ratings.values()) {
+      rating += rateValue;
     }
 
     rating /= ratings.size();
     new DecimalFormat(ZERO_DECIMAL).format(rating);
+  }
+
+  /** Update a rating */
+  public void updateRating(final int rate) {
+    ratings.put(Database.getInstance().getCurrentUser(), (double) rate);
+
+    rating = 0;
+    for (Double rateValue : ratings.values()) {
+      rating += rateValue;
+    }
+
+    rating /= ratings.size();
+    new DecimalFormat(ZERO_DECIMAL).format(rating);
+  }
+
+  /** Check if a movie is in a list of movies. */
+  public static boolean isInList(final ArrayList<Movie> list, final String movie) {
+    for (Movie movie1 : list) {
+      if (movie1.getName().equalsIgnoreCase(movie)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

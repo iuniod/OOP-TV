@@ -1,6 +1,8 @@
 package output;
 
 import input.action.Action;
+import output.error.Error;
+import output.success.Success;
 
 import static database.Constants.*;
 

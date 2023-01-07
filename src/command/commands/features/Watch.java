@@ -1,11 +1,10 @@
-package command.commands;
+package command.commands.features;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import command.Command;
 import database.Database;
 import input.action.Action;
-import input.user.User;
 import output.OutputFactory;
 
 import java.io.IOException;
@@ -13,12 +12,13 @@ import java.util.Objects;
 
 import static database.Constants.*;
 
-public final class Purchase extends OutputFactory implements Command {
+public final class Watch extends OutputFactory implements Command {
   private final Action action;
 
-  public Purchase(final Action action) {
+  public Watch(final Action action) {
     this.action = action;
   }
+
 
   @Override
   public boolean isExecutable() {
@@ -31,21 +31,12 @@ public final class Purchase extends OutputFactory implements Command {
     if (!database.getFeatureWorkFlow().get(SEE_DETAILS).contains(feature)) {
       return false;
     }
-
     if (action.getMovie() != null
             && !database.getCurrentMovie().getName().equalsIgnoreCase(action.getMovie())) {
       return false;
     }
 
-    User user = database.getCurrentUser();
-    switch (user.getCredentials().getAccountType()) {
-      case STANDARD:
-        return user.getTokensCount() >= 2;
-      case PREMIUM:
-        return user.getNumFreePremiumMovies() != 0 || user.getTokensCount() >= 2;
-      default:
-        return false;
-    }
+    return database.getCurrentUser().getPurchasedMovies().contains(database.getCurrentMovie());
   }
 
   @Override
@@ -57,24 +48,8 @@ public final class Purchase extends OutputFactory implements Command {
   @Override
   public void executeSuccess(final ObjectMapper mapper,
                              final ArrayNode arrayNode) throws IOException {
-    Database database = Database.getInstance();
-    User user = database.getCurrentUser();
-    switch (user.getCredentials().getAccountType()) {
-      case STANDARD:
-        user.setTokensCount(user.getTokensCount() - 2);
-        break;
-      case PREMIUM:
-        if (user.getNumFreePremiumMovies() != 0) {
-          user.setNumFreePremiumMovies(user.getNumFreePremiumMovies() - 1);
-        } else {
-          user.setTokensCount(user.getTokensCount() - 2);
-        }
-        break;
-      default:
-        break;
-    }
-
-    user.addPurchasedMovie(database.getCurrentMovie());
+    Database.getInstance().getCurrentUser()
+        .addWatchedMovie(Database.getInstance().getCurrentMovie());
     Objects.requireNonNull(getOutput(SUCCESS, action)).write(mapper, arrayNode);
   }
 }

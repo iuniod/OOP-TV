@@ -1,10 +1,11 @@
-package output;
+package output.success;
 
 import database.Database;
 import input.action.Action;
 import input.movie.Movie;
-import input.user.Credential;
 import input.user.User;
+import output.Output;
+import output.success.filter.FilterList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,27 +34,25 @@ public final class Success implements Output {
 
   @Override
   public ArrayList<Movie> currentMoviesList() {
-    ArrayList<Movie> moviesList = new ArrayList<>();
     ArrayList<Movie> movies = Database.getInstance().getMovies();
-    Credential credentials = Database.getInstance().getCurrentUser().getCredentials();
-    String key = action.getPage();
+    String key = action.getFeature();
 
     if (key == null) {
-      key = action.getFeature();
+      key = action.getPage();
     }
+
+    Context context = new Context(new NullList());
 
     if (key.equalsIgnoreCase(MOVIES)) {
-      if (!movies.isEmpty()) {
-        for (Movie movie : movies) {
-          if (!movie.getCountriesBanned().contains(credentials.getCountry())) {
-            moviesList.add(movie);
-          }
-        }
-      }
+      context = new Context(new MovieList());
+    } else if (key.equalsIgnoreCase((SEARCH))) {
+      context = new Context(new SearchList(action.getStartsWith()));
     } else if (DETAILS.contains(key.toUpperCase())) {
-      moviesList.add(Database.getInstance().getCurrentMovie());
+      context = new Context(new DetailsList());
+    } else if (key.equalsIgnoreCase((FILTER))) {
+      context = new Context(new FilterList(action.getFilters()));
     }
 
-    return moviesList;
+    return context.executeStrategy(movies);
   }
 }

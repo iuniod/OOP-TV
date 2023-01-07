@@ -1,10 +1,11 @@
-package command.commands;
+package command.commands.features;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import command.Command;
 import database.Database;
 import input.action.Action;
+import input.movie.Movie;
 import output.OutputFactory;
 
 import java.io.IOException;
@@ -12,10 +13,10 @@ import java.util.Objects;
 
 import static database.Constants.*;
 
-public final class Like extends OutputFactory implements Command {
+public final class Rate extends OutputFactory implements Command {
   private final Action action;
 
-  public Like(final Action action) {
+  public Rate(final Action action) {
     this.action = action;
   }
 
@@ -35,6 +36,10 @@ public final class Like extends OutputFactory implements Command {
       return false;
     }
 
+    if (action.getRate() > MAX_RATE || action.getRate() <= 0) {
+      return false;
+    }
+
     return database.getCurrentUser().getWatchedMovies().contains(database.getCurrentMovie());
   }
 
@@ -47,9 +52,14 @@ public final class Like extends OutputFactory implements Command {
   @Override
   public void executeSuccess(final ObjectMapper mapper,
                              final ArrayNode arrayNode) throws IOException {
-    Database.getInstance().getCurrentUser().addLikedMovie(Database.getInstance().getCurrentMovie());
-    Database.getInstance().getCurrentMovie()
-        .setNumLikes(Database.getInstance().getCurrentMovie().getNumLikes() + 1);
+    Database database = Database.getInstance();
+    if (!Movie.isInList(database.getCurrentUser().getRatedMovies(),
+        database.getCurrentMovie().getName())) {
+      database.getCurrentMovie().addRating(action.getRate());
+    } else {
+      database.getCurrentMovie().updateRating(action.getRate());
+    }
+    database.getCurrentUser().addRatedMovie(Database.getInstance().getCurrentMovie());
     Objects.requireNonNull(getOutput(SUCCESS, action)).write(mapper, arrayNode);
   }
 }

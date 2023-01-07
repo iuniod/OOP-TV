@@ -1,16 +1,17 @@
-package output;
+package output.error;
 
 import input.movie.Movie;
 import input.user.User;
+import output.Output;
 
 import java.util.ArrayList;
 
-import static database.Constants.OUTPUTERROR;
+import static database.Constants.OUTPUT_ERROR;
 
 public final class Error implements Output {
   @Override
   public String error() {
-    return OUTPUTERROR;
+    return OUTPUT_ERROR;
   }
 
   @Override

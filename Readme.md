@@ -93,3 +93,32 @@ Moreover, it is easy to add new pages and features without modifying existing co
 - I would like to implement separate classes for the particular successful outputs such as for `movies` or `see details` and its features.
 - Use more oneliners for the code.
 - Use more design patterns such as `Builder Design Pattern` for creating the output.
+
+- success output for:
+    - movies page
+    - details page + features
+    - filter
+    - search
+      common things:
+    - error message
+    - user
+      different things:
+    - currentMoviesList:
+        - movies: all not banned movies
+        - details+: current movie
+        - search: movies that starts with ...
+        - filter: sorted movies
+          !!!Using farcade for Success output types
+
+- observer pattern for notifications
+
+- criteria pattern for filters (x)
+
+- strategy pattern for success output (x)
+
+- abstract factory pattern for commands (x)
+
+- factory pattern for output (x)
+
+- singleton pattern for database (x)
+	

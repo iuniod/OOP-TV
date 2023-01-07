@@ -1,39 +1,30 @@
-package command.commands;
+package command.commands.database;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import command.Command;
 import database.Database;
 import input.action.Action;
-import input.user.User;
+import input.movie.Movie;
 import output.OutputFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import static database.Constants.*;
 
-public final class BuyTokens extends OutputFactory implements Command {
+public final class Delete extends OutputFactory implements Command {
   private final Action action;
 
-  public BuyTokens(final Action action) {
+  public Delete(final Action action) {
     this.action = action;
   }
 
   @Override
   public boolean isExecutable() {
     Database database = Database.getInstance();
-    if (!database.getCurrentPage().equalsIgnoreCase(UPGRADES)) {
-      return false;
-    }
-
-    String feature = action.getFeature().toUpperCase();
-    if (!database.getFeatureWorkFlow().get(UPGRADES).contains(feature)) {
-      return false;
-    }
-
-    User user = database.getCurrentUser();
-    return user.getCredentials().findBalanceCount() >= action.getCount();
+    return Movie.isInList(database.getMovies(), action.getDeletedMovie());
   }
 
   @Override
@@ -46,8 +37,15 @@ public final class BuyTokens extends OutputFactory implements Command {
   public void executeSuccess(final ObjectMapper mapper,
                              final ArrayNode arrayNode) throws IOException {
     Database database = Database.getInstance();
-    User user = database.getCurrentUser();
-    user.setTokensCount(user.getTokensCount() + action.getCount());
-    user.getCredentials().setBalance(user.getCredentials().findBalanceCount() - action.getCount());
+
+    ArrayList<Movie> erasedMovies = new ArrayList<>();
+    for (Movie movie : database.getMovies()) {
+      if (movie.getName().equals(action.getDeletedMovie())) {
+        database.getNotifications().notifyAllObservers(movie, DELETE);
+        erasedMovies.add(movie);
+      }
+    }
+
+    database.getMovies().removeAll(erasedMovies);
   }
 }

@@ -7,6 +7,7 @@ import command.AbstractFactory;
 import command.Command;
 import command.CommandFactory;
 import database.Database;
+import database.Recomandation;
 import input.InputFormat;
 import input.action.Action;
 
@@ -28,6 +29,9 @@ public final class Main {
     mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
     ArrayNode arrayNode = mapper.createArrayNode();
 
+    String test = args[0].substring(args[0].lastIndexOf("\\") + 1);
+    File myOutput = new File("checker/resources/out/" + test);
+
 //      read the input file
     InputFormat inputFormat = mapper.readValue(input, InputFormat.class);
     Database database = Database.getInstance();
@@ -40,7 +44,7 @@ public final class Main {
       } else {
         Command command = factory.getAction(action);
         if (command == null) {
-          System.err.println(INVALID_COMMAND);
+          System.out.println(INVALID_COMMAND + " " + action.getType() + " " + action.getFeature());
         } else {
           if (command.isExecutable()) {
             command.executeSuccess(mapper, arrayNode);
@@ -51,7 +55,11 @@ public final class Main {
       }
     }
 
+    Recomandation recomandation = new Recomandation();
+    recomandation.recommend(mapper, arrayNode);
+
     ObjectWriter objectWriter = mapper.writerWithDefaultPrettyPrinter();
     objectWriter.writeValue(output, arrayNode);
+    objectWriter.writeValue(myOutput, arrayNode);
   }
 }

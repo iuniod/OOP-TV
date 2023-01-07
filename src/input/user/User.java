@@ -1,5 +1,6 @@
 package input.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import input.movie.Movie;
 
 import java.util.ArrayList;
@@ -14,6 +15,11 @@ public final class User {
   private ArrayList<Movie> watchedMovies = new ArrayList<>();
   private ArrayList<Movie> likedMovies = new ArrayList<>();
   private ArrayList<Movie> ratedMovies = new ArrayList<>();
+  private ArrayList<Notification> notifications = new ArrayList<>();
+
+  @JsonIgnore
+  private final ArrayList<String> subscribedGenres = new ArrayList<>();
+
 
   public User() {
   }
@@ -50,6 +56,10 @@ public final class User {
     this.ratedMovies = ratedMovies;
   }
 
+  public void setNotifications(final ArrayList<Notification> notifications) {
+    this.notifications = notifications;
+  }
+
   public Credential getCredentials() {
     return credentials;
   }
@@ -78,6 +88,14 @@ public final class User {
     return ratedMovies;
   }
 
+  public ArrayList<Notification> getNotifications() {
+    return notifications;
+  }
+
+  public ArrayList<String> getSubscribedGenres() {
+    return subscribedGenres;
+  }
+
   /**
    * Add a movie to the list of purchased movies.
    */
@@ -89,20 +107,40 @@ public final class User {
    * Add a movie to the watched movies list
    */
   public void addWatchedMovie(final Movie movie) {
-    watchedMovies.add(movie);
+    if (!watchedMovies.contains(movie)) {
+      watchedMovies.add(movie);
+    }
   }
 
   /**
    * Add a movie to the liked movies list
    */
   public void addLikedMovie(final Movie movie) {
-    likedMovies.add(movie);
+    if (!likedMovies.contains(movie)) {
+      likedMovies.add(movie);
+    }
   }
 
   /**
    * Add a movie to the rated movies list
    */
   public void addRatedMovie(final Movie movie) {
-    ratedMovies.add(movie);
+    if (!ratedMovies.contains(movie)) {
+      ratedMovies.add(movie);
+    }
+  }
+
+  /**
+   * Add a genre to the subscribed genres list
+   */
+  public void addSubscribedGenre(final String genre) {
+    subscribedGenres.add(genre);
+  }
+
+  /**
+   * Add a notification to the notifications list
+   */
+  public void addNotification(final String movieName, final String message) {
+    notifications.add(new Notification(movieName, message));
   }
 }
